@@ -12,18 +12,31 @@
   <h1>Drawing Sandbox</h1>
   <h2>by OpenGNTG</h2>
 
-  <!-- Button container -->
-  <div class="shape-btn-container">
-    <button id="line" class="shape-btn">Line</button>
-    <button id="square" class="shape-btn">Square</button>
-    <button id="rectangle" class="shape-btn">Rectangle</button>
-    <button id="polygon" class="shape-btn">Polygon</button>
+  <!-- Canvas color -->
+  <div id="canvas-color-container">
+    <label for="canvas-color">Canvas color</label>
+    <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
+    <span class="warning">Changing canvas color will also clear the canvas</span>
   </div>
 
   <!-- Canvas -->
   <canvas>
 
   </canvas>
+
+  <!-- Shape buttons -->
+  <div class="shape-btn-container">
+    <button id="line" class="shape-btn active">Line</button>
+    <button id="square" class="shape-btn">Square</button>
+    <button id="rectangle" class="shape-btn">Rectangle</button>
+    <button id="polygon" class="shape-btn">Polygon</button>
+  </div>
+
+  <!-- Shape color -->
+  <div id="shape-color-container">
+    <label for="shape-color">Shape color</label>
+    <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
+  </div>
 
   <!-- Box to show error log -->
   <div id="error-box">
@@ -37,12 +50,24 @@
 
   <!-- Utilities -->
   <script src="./script/utils/log.js"></script>
+  <script src="./script/utils/parser.js"></script>
+  <script src="./script/utils/viewport.js"></script>
+
+  <!-- Shaders -->
+  <script src="./script/shaders.js"></script>
+
+  <!-- Draw -->
+  <script src="./script/draw.js"></script>
+
+  <!-- Shapes -->
+  <script src="./script/shapes.js"></script>
 
   <!-- Global state -->
-  <script src="./script/state.js"></script>
+  <script src="./script/states.js"></script>
 
   <!-- Main app -->
   <script src="./script/index.js"></script>
+
 </body>
 
 </html>

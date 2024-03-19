@@ -29,13 +29,27 @@ body {
   color: #2a2a2a;
 }
 
+#canvas-color-container,
+#shape-color-container {
+  display: flex;
+  flex-direction: column;
+}
+
+#canvas-color-input,
+#shape-color-input {
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
+}
+
 canvas {
   width: 400px;
   height: 400px;
   background-color: #da6052;
 }
 
-#error-box p {
+#error-box p,
+.warning {
   color: #da6052;
 }
 
