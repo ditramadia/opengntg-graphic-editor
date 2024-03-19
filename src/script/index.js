@@ -1,11 +1,3 @@
-// try {
-//   helloTriangle();
-// } catch (err) {
-//   showError(`Uncaught JavaScript Exception: ${err}`);
-// }
+// App
 
-try {
-  initCanvas();
-} catch {
-  showError("Failed initializing canvas");
-}
+// TODO: Initialize canvas

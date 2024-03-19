@@ -9,6 +9,26 @@ body {
   color: #c3c3c3;
 }
 
+.shape-btn-container {
+  margin: 5px 0;
+  display: flex;
+  gap: 3px;
+}
+
+.shape-btn {
+  background-color: transparent;
+  border: 1px solid #f6781d;
+  border-radius: 3px;
+  padding: 6px 10px;
+  color: #f6781d;
+  cursor: pointer;
+}
+
+.shape-btn.active {
+  background-color: #f6781d;
+  color: #2a2a2a;
+}
+
 canvas {
   width: 400px;
   height: 400px;

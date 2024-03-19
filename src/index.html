@@ -12,21 +12,36 @@
   <h1>Drawing Sandbox</h1>
   <h2>by OpenGNTG</h2>
 
+  <!-- Button container -->
+  <div class="shape-btn-container">
+    <button id="line" class="shape-btn">Line</button>
+    <button id="square" class="shape-btn">Square</button>
+    <button id="rectangle" class="shape-btn">Rectangle</button>
+    <button id="polygon" class="shape-btn">Polygon</button>
+  </div>
+
+  <!-- Canvas -->
   <canvas>
 
   </canvas>
 
+  <!-- Box to show error log -->
   <div id="error-box">
     <span>Error messages:</span>
   </div>
 
+  <!-- Box to show console log -->
   <div id="log-box">
     <span>Log messages:</span>
   </div>
 
-  <script src="./script/utils.js"></script>
-  <script src="./script/selector.js"></script>
-  <script src="./script/feature.js"></script>
+  <!-- Utilities -->
+  <script src="./script/utils/log.js"></script>
+
+  <!-- Global state -->
+  <script src="./script/state.js"></script>
+
+  <!-- Main app -->
   <script src="./script/index.js"></script>
 </body>
 
