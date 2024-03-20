@@ -11,16 +11,27 @@ class Shape {
     throw new Error("Must be implemented");
   }
 
+  setColor(i, rgba) {
+    this.colorBuffer[i * 4] = rgba[0];
+    this.colorBuffer[i * 4 + 1] = rgba[1];
+    this.colorBuffer[i * 4 + 2] = rgba[2];
+    this.colorBuffer[i * 4 + 3] = rgba[3];
+  }
+
   setVertexX(i, x) {
     this.vertexBuffer[i * 2] = x;
   }
 
-  getVertexX(i) {
-    return this.vertexBuffer[i * 2];
-  }
-
   setVertexY(i, y) {
     this.vertexBuffer[i * 2 + 1] = y;
+  }
+
+  getColor(i) {
+    return this.colorBuffer.slice(i * 4, i * 4 + 4);
+  }
+
+  getVertexX(i) {
+    return this.vertexBuffer[i * 2];
   }
 
   getVertexY(i) {

@@ -1,3 +1,15 @@
+// == Color ===============================================================
+editColorInput.addEventListener("input", () => {
+  const newColor = hexToRGBA(editColorInput.value);
+
+  // Change every selected vertices
+  for (let i = 0; i < selectedPoints.length; i++) {
+    vertexObj = selectedPoints[i];
+    vertexIdx = selectedPointIndex[i];
+    vertexObj.setColor(vertexIdx, newColor);
+  }
+});
+
 // == Translate X =========================================================
 // Variables
 const translateXInput = document.querySelector("#translate-x-input");

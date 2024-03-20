@@ -13,12 +13,12 @@ const polygonObjects = document.querySelector("#polygon-objects");
 
 // Properties
 const propertyContainer = document.querySelectorAll(".property-container");
-
 const canvasColorInput = document.querySelector("#canvas-color-input");
 const canvasColorValueSpan = document.querySelector("#canvas-color-value");
-
 const shapeColorInput = document.querySelector("#shape-color-input");
 const shapeColorValueSpan = document.querySelector("#shape-color-value");
+const editColorInput = document.querySelector("#edit-color-input");
+const editColorValueSpan = document.querySelector("#edit-color-value");
 
 // == State variables =====================================================
 let gl = undefined;
@@ -34,6 +34,7 @@ const shapes = {
 let selectedPoints = [];
 let selectedPointIndex = [];
 let initialPointsPosition = [];
+let editColor = [0.9, 0.9, 0.9, 1.0];
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -110,6 +111,11 @@ function updateSelectedObjects() {
 
   // Update mode
   isEditing = selectedPoints.length > 0;
+
+  // Update edit color
+  editColor = shapes.lines[0].getColor(0);
+  editColorInput.value = rgbaToHex(editColor);
+  editColorValueSpan.innerHTML = editColorInput.value;
 
   // Update property bar
   updatePropertyBar();

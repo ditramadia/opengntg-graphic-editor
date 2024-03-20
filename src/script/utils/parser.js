@@ -6,3 +6,17 @@ function hexToRGBA(hex) {
 
   return [r, g, b, a];
 }
+
+function rgbaToHex(rgba) {
+  let r = Math.round(rgba[0] * 255)
+    .toString(16)
+    .padStart(2, "0");
+  let g = Math.round(rgba[1] * 255)
+    .toString(16)
+    .padStart(2, "0");
+  let b = Math.round(rgba[2] * 255)
+    .toString(16)
+    .padStart(2, "0");
+
+  return `#${r}${g}${b}`;
+}
