@@ -29,9 +29,8 @@ let isDrawing = false;
 const shapes = {
   lines: [],
 };
-const selectedShapes = {
-  lines: [],
-};
+// let selectedShapes = []; // Unused?
+let selectedPointsMapped = [];
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -87,44 +86,91 @@ for (let i = 0; i < toolButtons.length; i++) {
 }
 
 // == Object lists ========================================================
+// Update selected objects
+function updateSelectedObjects() {
+  // Clear the array
+  // selectedShapes = [];
+  let selectedPoints = [];
+  let selectedPointIndex = [];
+  let selectedPointsMapped = [];
+
+  // Insert all the checked objects id into an array
+  const checkedObjectIds = [];
+  document.querySelectorAll("input[type=checkbox]").forEach((checkbox) => {
+    if (checkbox.checked) {
+      checkedObjectIds.push(checkbox.value);
+    }
+  });
+
+  // Insert all the checked objects into selectedShapes
+  checkedObjectIds.forEach((id) => {
+    // if (id.includes("l-") && !id.includes("point")) {
+    //   selectedShapes.push(shapes.lines[parseInt(id.split("-")[1]) - 1]);
+    // }
+
+    if (id.includes("l-") && id.includes("point")) {
+      selectedPoints.push(shapes.lines[parseInt(id.split("-")[1]) - 1]);
+      selectedPointIndex.push(parseInt(id.split("-")[3]) - 1);
+    }
+  });
+
+  // Update selectedPointsMapped
+  selectedPointsMapped = [selectedPoints, selectedPointIndex];
+  console.log(selectedPointsMapped);
+}
+
+// Insert a newly created object into HTML object list
 function insertShapeToHTML(type, obj) {
   if (type === "line") {
-    showLog("Insert line to HTML");
-    showLog(`id: ${obj.id}`);
-    showLog(`n_point: ${obj.numOfVertex}`);
-
     // Append new line to line object list
     const newLine = document.createElement("div");
     newLine.innerHTML = `<div class="object-item list">
-    <input type="checkbox" id="line-${obj.id}" name="line-${obj.id}" value="line-${obj.id}" />
-    <label for="line-${obj.id}">Line ${obj.id}</label>
+    <input type="checkbox" id="l-${obj.id}" name="l-${obj.id}" value="l-${obj.id}" />
+    <label for="l-${obj.id}">Line ${obj.id}</label>
     </div>`;
     lineObjects.querySelector(".items").appendChild(newLine);
 
     // Append new line points to line point list
     for (let i = 1; i <= obj.numOfVertex; i++) {
       newLine.innerHTML += `<div class="point-item list">
-      <input type="checkbox" id="line-${obj.id}-point-${i}" name="line-${obj.id}-point" value="line-${obj.id}-point-${i}" />
-      <label for="line-${obj.id}-point-${i}">Point ${i}</label>
+      <input type="checkbox" id="l-${obj.id}-point-${i}" name="l-${obj.id}-point" value="l-${obj.id}-point-${i}" />
+      <label for="l-${obj.id}-point-${i}">Point ${i}</label>
     </div>`;
     }
 
-    // Set the checked checkbox
-    let shapeSelection = document.querySelector(`#line-${obj.id}`);
-    shapeSelection.addEventListener("change", () => {
-      if (shapeSelection.checked) {
-        document
-          .querySelectorAll(`input[name="line-${obj.id}-point"]`)
-          .forEach((point) => {
-            point.checked = true;
-          });
+    // Handle shape checkbox event
+    const shapeInput = document.querySelector(`#l-${obj.id}`);
+    shapeInput.addEventListener("change", () => {
+      if (shapeInput.checked) {
+        // Insert the shape into selectedShapes
+        // selectedShapes.push(shapeInput.id);
+
+        // Check all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = true;
+        });
       } else {
-        document
-          .querySelectorAll(`input[name="line-${obj.id}-point"]`)
-          .forEach((point) => {
-            point.checked = false;
-          });
+        // Remove the shape from selectedShapes
+        // selectedShapes.splice(selectedShapes.indexOf(shapeInput.id), 1);
+
+        // Uncheck all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = false;
+        });
       }
+
+      updateSelectedObjects();
+    });
+
+    // Handle point checkbox event
+    const pointInputs = document.querySelectorAll(
+      `input[name="l-${obj.id}-point"]`
+    );
+    pointInputs.forEach((point) => {
+      point.addEventListener("change", () => {
+        // Update selected objects
+        updateSelectedObjects();
+      });
     });
   }
 }
