@@ -11,6 +11,22 @@ class Shape {
     throw new Error("Must be implemented");
   }
 
+  setVertexX(i, x) {
+    this.vertexBuffer[i * 2] = x;
+  }
+
+  getVertexX(i) {
+    return this.vertexBuffer[i * 2];
+  }
+
+  setVertexY(i, y) {
+    this.vertexBuffer[i * 2 + 1] = y;
+  }
+
+  getVertexY(i) {
+    return this.vertexBuffer[i * 2 + 1];
+  }
+
   render() {
     throw new Error("Must be implemented");
   }

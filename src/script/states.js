@@ -26,11 +26,14 @@ let canvasColor = [0.08, 0.08, 0.08, 1.0];
 let selectedTool = "cursor";
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
+let isEditing = false;
 const shapes = {
   lines: [],
 };
 // let selectedShapes = []; // Unused?
-let selectedPointsMapped = [[], []];
+let selectedPoints = [];
+let selectedPointIndex = [];
+let initialPointsPosition = [];
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -80,9 +83,9 @@ for (let i = 0; i < toolButtons.length; i++) {
 function updateSelectedObjects() {
   // Clear the array
   // selectedShapes = [];
-  let selectedPoints = [];
-  let selectedPointIndex = [];
-  let selectedPointsMapped = [[], []];
+  selectedPoints = [];
+  selectedPointIndex = [];
+  initialPointsPosition = [];
 
   // Insert all the checked objects id into an array
   const checkedObjectIds = [];
@@ -92,23 +95,24 @@ function updateSelectedObjects() {
     }
   });
 
-  // Insert all the checked objects into selectedShapes
+  // Insert all the checked objects into selectedPoints
   checkedObjectIds.forEach((id) => {
-    // if (id.includes("l-") && !id.includes("point")) {
-    //   selectedShapes.push(shapes.lines[parseInt(id.split("-")[1]) - 1]);
-    // }
-
     if (id.includes("l-") && id.includes("point")) {
-      selectedPoints.push(shapes.lines[parseInt(id.split("-")[1]) - 1]);
-      selectedPointIndex.push(parseInt(id.split("-")[3]) - 1);
+      const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
+      const pointId = parseInt(id.split("-")[3]) - 1;
+      const pointObj = [obj.getVertexX(pointId), obj.getVertexY(pointId)];
+
+      selectedPoints.push(obj);
+      selectedPointIndex.push(pointId);
+      initialPointsPosition.push(pointObj);
     }
   });
 
-  // Update selectedPointsMapped
-  selectedPointsMapped = [selectedPoints, selectedPointIndex];
+  // Update mode
+  isEditing = selectedPoints.length > 0;
 
   // Update property bar
-  updatePropertyBar((isEditing = selectedPointsMapped[0].length > 0));
+  updatePropertyBar();
 }
 
 // Insert a newly created object into HTML object list
@@ -169,9 +173,7 @@ function insertShapeToHTML(type, obj) {
 
 // == Property handler ====================================================
 // Property bar
-function updatePropertyBar(isEditing) {
-  showLog("Update property bar");
-
+function updatePropertyBar() {
   for (let j = 0; j < propertyContainer.length; j++) {
     propertyContainer[j].classList.remove("active");
   }
@@ -208,8 +210,14 @@ shapeColorInput.addEventListener("input", () => {
 });
 
 // == Drawing state handler ===============================================
+// When the user started drawing
 canvas.addEventListener("mousedown", (e) => {
-  if (selectedTool === "cursor" || selectedTool === "canvas" || isDrawing) {
+  if (
+    selectedTool === "cursor" ||
+    selectedTool === "canvas" ||
+    isDrawing ||
+    isEditing
+  ) {
     return;
   }
 
@@ -224,8 +232,14 @@ canvas.addEventListener("mousedown", (e) => {
   isDrawing = true;
 });
 
+// When the user is drawing
 canvas.addEventListener("mousemove", (e) => {
-  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
+  if (
+    selectedTool === "cursor" ||
+    selectedTool === "canvas" ||
+    !isDrawing ||
+    isEditing
+  ) {
     return;
   }
 
@@ -235,8 +249,14 @@ canvas.addEventListener("mousemove", (e) => {
   }
 });
 
+// When the user stopped drawing
 canvas.addEventListener("mouseup", (e) => {
-  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
+  if (
+    selectedTool === "cursor" ||
+    selectedTool === "canvas" ||
+    !isDrawing ||
+    isEditing
+  ) {
     return;
   }
 
