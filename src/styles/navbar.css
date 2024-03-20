@@ -12,6 +12,7 @@ nav {
 }
 
 #logo {
+  width: fit-content;
   display: flex;
   gap: 10px;
 }
@@ -22,7 +23,7 @@ nav ul {
 }
 
 nav ul li {
-  width: fit-content;
+  width: 56px;
   height: 100%;
   padding: 0 20px;
   color: var(--white);
@@ -43,4 +44,15 @@ nav ul li:hover {
 
 nav ul li.active {
   background-color: var(--accent-color);
+}
+
+nav .nav-icon {
+  width: 20px;
+  height: 20px;
+}
+
+#rectangle .nav-icon,
+#polygon .nav-icon {
+  width: 28px;
+  height: 28px;
 }

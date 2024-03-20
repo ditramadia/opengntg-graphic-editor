@@ -46,8 +46,33 @@
 }
 
 #canvas-color-input,
-#shape-color-input {
+#shape-color-input,
+#edit-color-input {
   background-color: transparent;
   border: none;
   border-radius: 3px;
+}
+
+.label-value {
+  width: fit-content;
+  border: 1px solid var(--secondary-color);
+  border-radius: 3px;
+  padding-left: 8px;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.label-value:hover {
+  border: 1px solid var(--tertiary-color);
+}
+
+.label-value input {
+  width: 60px;
+  height: 30px;
+  padding: 0 8px;
+  border: none;
+  background-color: var(--secondary-color);
+  color: var(--text-color);
 }

@@ -27,12 +27,24 @@
         <span>OpenGNTG</span>
         <i class="fa-solid fa-chevron-down"></i>
       </li>
-      <li id="cursor" class="tool-btn active">Cursor</li>
-      <li id="canvas" class="tool-btn">Canvas</li>
-      <li id="line" class="tool-btn">Line</li>
-      <li id="square" class="tool-btn">Square</li>
-      <li id="rectangle" class="tool-btn">Rectangle</li>
-      <li id="polygon" class="tool-btn">Polygon</li>
+      <li id="cursor" class="tool-btn active">
+        <img src="../public/cursor-ic.svg" class="nav-icon">
+      </li>
+      <li id="canvas" class="tool-btn">
+        <img src="../public/canvas-ic.svg" class="nav-icon">
+      </li>
+      <li id="line" class="tool-btn">
+        <img src="../public/line-ic.svg" class="nav-icon">
+      </li>
+      <li id="square" class="tool-btn">
+        <img src="../public/square-ic.svg" class="nav-icon">
+      </li>
+      <li id="rectangle" class="tool-btn">
+        <img src="../public/rect-ic.svg" class="nav-icon">
+      </li>
+      <li id="polygon" class="tool-btn">
+        <img src="../public/poly-ic.svg" class="nav-icon">
+      </li>
     </ul>
   </nav>
 
@@ -118,7 +130,7 @@
     </div>
 
     <!-- Edit property -->
-    <div id="edit-properties" class="property-container active">
+    <div id="edit-properties" class="property-container">
       <!-- Edit color -->
       <div class="property">
         <label for="edit-color">Color</label>
@@ -133,12 +145,12 @@
         <label>Position</label>
         <div class="label-value">
           <label for="translate-x">X</label>
-          <input type="number" id="translate-x-input" class="prop-input" name="translate-x" value="0">
+          <input type="number" id="translate-x-input" class="prop-input" name="translate-x" value="0" placeholder="0">
         </div>
 
         <div class="label-value">
           <label for="translate">Y</label>
-          <input type="number" id="translate-y-input" class="prop-input" name="translate-y" value="0">
+          <input type="number" id="translate-y-input" class="prop-input" name="translate-y" value="0" placeholder="0">
         </div>
       </div>
     </div>
