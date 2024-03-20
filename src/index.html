@@ -45,16 +45,6 @@
         <span>Lines</span>
       </div>
       <div class="items">
-        <!-- <div>
-          <div class="object-item list">
-            <input type="checkbox" id="line-0" name="line-0" value="line-0" />
-            <label for="line-0">Line 0</label>
-          </div>
-          <div class="point-item list">
-            <input type="checkbox" id="line-0-point-0" name="line-0-point-0" value="line-0-point-0" />
-            <label for="line-0-point-0">Point 0</label>
-          </div>
-        </div> -->
       </div>
     </div>
 
@@ -116,13 +106,44 @@
     </div>
 
     <!-- Shape property -->
-    <div id="shape-properties" class="property-container active">
+    <div id="shape-properties" class="property-container">
       <!-- Shape color -->
       <div class="property">
         <label for="shape-color">Color</label>
         <div class="color-input">
           <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
           <span id="shape-color-value">#e5e5e5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit property -->
+    <div id="edit-properties" class="property-container">
+      <!-- Shape color -->
+      <div class="property">
+        <label for="edit-color">Color</label>
+        <div class="color-input">
+          <input type="color" id="edit-color-input" name="edit-color" value="#e5e5e5">
+          <span id="edit-color-value">#e5e5e5</span>
+        </div>
+      </div>
+
+      <!-- Translate -->
+      <div class="property">
+        <div class="label-value">
+          <label for="translate-x">X</label>
+          <span id="translate-x-value">0</span>
+        </div>
+        <div>
+          <input type="range" id="translate-x-input" class="slider" min="-100" max="100" name="translate-x" value="0">
+        </div>
+
+        <div class="label-value">
+          <label for="translate">Y</label>
+          <span id="translate-y-value">0</span>
+        </div>
+        <div>
+          <input type="range" id="translate-y-input" class="slider" min="-100" max="100" name="translate-y" value="0">
         </div>
       </div>
     </div>
@@ -142,14 +163,17 @@
   <!-- Shaders -->
   <script src="./script/shaders.js"></script>
 
-  <!-- Draw -->
+  <!-- Draw functions -->
   <script src="./script/draw.js"></script>
 
-  <!-- Shapes -->
+  <!-- Shapes class -->
   <script src="./script/shapes.js"></script>
 
   <!-- Global state -->
   <script src="./script/states.js"></script>
+
+  <!-- Transform functions -->
+  <script src="./script/transforms.js"></script>
 
   <!-- Main app -->
   <script src="./script/index.js"></script>

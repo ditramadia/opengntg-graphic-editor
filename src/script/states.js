@@ -30,7 +30,7 @@ const shapes = {
   lines: [],
 };
 // let selectedShapes = []; // Unused?
-let selectedPointsMapped = [];
+let selectedPointsMapped = [[], []];
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -71,17 +71,7 @@ for (let i = 0; i < toolButtons.length; i++) {
     }
     toolButtons[i].classList.add("active");
 
-    for (let j = 0; j < propertyContainer.length; j++) {
-      propertyContainer[j].classList.remove("active");
-    }
-    if (selectedTool === "cursor") {
-      return;
-    }
-    if (selectedTool === "canvas") {
-      propertyContainer[0].classList.add("active");
-    } else {
-      propertyContainer[1].classList.add("active");
-    }
+    updatePropertyBar();
   });
 }
 
@@ -92,7 +82,7 @@ function updateSelectedObjects() {
   // selectedShapes = [];
   let selectedPoints = [];
   let selectedPointIndex = [];
-  let selectedPointsMapped = [];
+  let selectedPointsMapped = [[], []];
 
   // Insert all the checked objects id into an array
   const checkedObjectIds = [];
@@ -116,7 +106,9 @@ function updateSelectedObjects() {
 
   // Update selectedPointsMapped
   selectedPointsMapped = [selectedPoints, selectedPointIndex];
-  console.log(selectedPointsMapped);
+
+  // Update property bar
+  updatePropertyBar((isEditing = selectedPointsMapped[0].length > 0));
 }
 
 // Insert a newly created object into HTML object list
@@ -176,6 +168,32 @@ function insertShapeToHTML(type, obj) {
 }
 
 // == Property handler ====================================================
+// Property bar
+function updatePropertyBar(isEditing) {
+  showLog("Update property bar");
+
+  for (let j = 0; j < propertyContainer.length; j++) {
+    propertyContainer[j].classList.remove("active");
+  }
+
+  if (selectedTool === "cursor") {
+    canvas.style.cursor = "default";
+    return;
+  }
+  if (selectedTool === "canvas") {
+    canvas.style.cursor = "default";
+    propertyContainer[0].classList.add("active");
+  } else {
+    if (!isEditing) {
+      canvas.style.cursor = "crosshair";
+      propertyContainer[1].classList.add("active");
+    } else {
+      canvas.style.cursor = "default";
+      propertyContainer[2].classList.add("active");
+    }
+  }
+}
+
 // Canvas color
 canvasColorInput.addEventListener("input", () => {
   canvasColorValueSpan.innerHTML = canvasColorInput.value;
