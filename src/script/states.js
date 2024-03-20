@@ -6,7 +6,6 @@ const canvas = document.querySelector("canvas");
 const toolButtons = document.querySelectorAll(".tool-btn");
 
 // Object list
-const objectList = document.querySelectorAll(".object-list");
 const lineObjects = document.querySelector("#line-objects");
 const squareObjects = document.querySelector("#square-objects");
 const rectangleObjects = document.querySelector("#rectangle-objects");
@@ -28,6 +27,9 @@ let selectedTool = "cursor";
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 const shapes = {
+  lines: [],
+};
+const selectedShapes = {
   lines: [],
 };
 
@@ -85,19 +87,45 @@ for (let i = 0; i < toolButtons.length; i++) {
 }
 
 // == Object lists ========================================================
-for (let i = 0; i < objectList.length; i++) {
-  objectList[i].querySelector(".object-label").addEventListener("click", () => {
-    objectList[i].classList.toggle("open");
-    objectList[i].querySelector(".fa-caret-down").classList.toggle("hide");
-    objectList[i].querySelector(".fa-caret-right").classList.toggle("hide");
-  });
-}
-
-function insertShapeToHTML(type) {
+function insertShapeToHTML(type, obj) {
   if (type === "line") {
-    lineObjects.querySelector(
-      ".items"
-    ).innerHTML += `<div class="list object-item">Line ${shapes.lines.length}</div>`;
+    showLog("Insert line to HTML");
+    showLog(`id: ${obj.id}`);
+    showLog(`n_point: ${obj.numOfVertex}`);
+
+    // Append new line to line object list
+    const newLine = document.createElement("div");
+    newLine.innerHTML = `<div class="object-item list">
+    <input type="checkbox" id="line-${obj.id}" name="line-${obj.id}" value="line-${obj.id}" />
+    <label for="line-${obj.id}">Line ${obj.id}</label>
+    </div>`;
+    lineObjects.querySelector(".items").appendChild(newLine);
+
+    // Append new line points to line point list
+    for (let i = 1; i <= obj.numOfVertex; i++) {
+      newLine.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="line-${obj.id}-point-${i}" name="line-${obj.id}-point" value="line-${obj.id}-point-${i}" />
+      <label for="line-${obj.id}-point-${i}">Point ${i}</label>
+    </div>`;
+    }
+
+    // Set the checked checkbox
+    let shapeSelection = document.querySelector(`#line-${obj.id}`);
+    shapeSelection.addEventListener("change", () => {
+      if (shapeSelection.checked) {
+        document
+          .querySelectorAll(`input[name="line-${obj.id}-point"]`)
+          .forEach((point) => {
+            point.checked = true;
+          });
+      } else {
+        document
+          .querySelectorAll(`input[name="line-${obj.id}-point"]`)
+          .forEach((point) => {
+            point.checked = false;
+          });
+      }
+    });
   }
 }
 
@@ -123,8 +151,10 @@ canvas.addEventListener("mousedown", (e) => {
 
   if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
-    shapes.lines.push(new Line(x, y, shapeColor));
-    insertShapeToHTML("line");
+    const newId = shapes.lines.length + 1;
+    const newLine = new Line(x, y, shapeColor, newId);
+    shapes.lines.push(newLine);
+    insertShapeToHTML("line", newLine);
   }
 
   isDrawing = true;

@@ -1,8 +1,10 @@
 class Shape {
-  constructor(x, y, rgbaColor) {
+  constructor(x, y, rgbaColor, id) {
+    this.id = id;
     this.vertexBuffer = [];
     this.colorBuffer = [];
     this.anchor = [x, y];
+    this.numOfVertex = 0;
   }
 
   setEndVertex(x, y) {
@@ -19,10 +21,11 @@ class Shape {
 }
 
 class Line extends Shape {
-  constructor(x, y, rgbaColor) {
-    super(x, y, rgbaColor);
+  constructor(x, y, rgbaColor, id) {
+    super(x, y, rgbaColor, id);
     this.vertexBuffer = [x, y, x, y];
     this.colorBuffer = [...rgbaColor, ...rgbaColor];
+    this.numOfVertex = this.vertexBuffer.length / 2;
   }
 
   render(program) {
@@ -45,7 +48,9 @@ class Line extends Shape {
 
   print() {
     showLog("\nLine");
+    showLog(`id: ${this.id}`);
     showLog(`vertexBuffer: ${this.vertexBuffer}`);
+    showLog(`numOfVertex: ${this.numOfVertex}`);
     showLog(`color: ${this.color}`);
     showLog(`colorBuffer: ${this.colorBuffer}`);
   }
