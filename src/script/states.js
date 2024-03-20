@@ -1,13 +1,30 @@
 // == Selectors ===========================================================
+// Canvas
 const canvas = document.querySelector("canvas");
-const shapeButtonDiv = document.querySelector(".shape-btn-container");
+
+// Tool buttons
+const toolButtons = document.querySelectorAll(".tool-btn");
+
+// Object list
+const objectList = document.querySelectorAll(".object-list");
+const lineObjects = document.querySelector("#line-objects");
+const squareObjects = document.querySelector("#square-objects");
+const rectangleObjects = document.querySelector("#rectangle-objects");
+const polygonObjects = document.querySelector("#polygon-objects");
+
+// Properties
+const propertyContainer = document.querySelectorAll(".property-container");
+
 const canvasColorInput = document.querySelector("#canvas-color-input");
+const canvasColorValueSpan = document.querySelector("#canvas-color-value");
+
 const shapeColorInput = document.querySelector("#shape-color-input");
+const shapeColorValueSpan = document.querySelector("#shape-color-value");
 
 // == State variables =====================================================
 let gl = undefined;
 let canvasColor = [0.08, 0.08, 0.08, 1.0];
-let selectedShapeMode = "line";
+let selectedTool = "cursor";
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 const shapes = {
@@ -40,67 +57,94 @@ try {
   showError(`Initialize canvas failed - ${error}`);
 }
 
-// == Select shape event handler ==========================================
-for (let i = 0; i < shapeButtonDiv.children.length; i++) {
-  shapeButtonDiv.children[i].addEventListener("click", () => {
-    if (selectedShapeMode === shapeButtonDiv.children[i].id) {
-      shapeButtonDiv.children[i].classList.remove("active");
-      selectedShapeMode = undefined;
+// == Select tool event handler ===========================================
+for (let i = 0; i < toolButtons.length; i++) {
+  toolButtons[i].addEventListener("click", () => {
+    if (selectedTool === toolButtons[i].id) {
       return;
+    }
+
+    selectedTool = toolButtons[i].id;
+    for (let j = 0; j < toolButtons.length; j++) {
+      toolButtons[j].classList.remove("active");
+    }
+    toolButtons[i].classList.add("active");
+
+    for (let j = 0; j < propertyContainer.length; j++) {
+      propertyContainer[j].classList.remove("active");
+    }
+    if (selectedTool === "cursor") {
+      return;
+    }
+    if (selectedTool === "canvas") {
+      propertyContainer[0].classList.add("active");
     } else {
-      selectedShapeMode = shapeButtonDiv.children[i].id;
-      for (let j = 0; j < shapeButtonDiv.children.length; j++) {
-        shapeButtonDiv.children[j].classList.remove("active");
-      }
-      shapeButtonDiv.children[i].classList.add("active");
+      propertyContainer[1].classList.add("active");
     }
   });
 }
 
-// == Change canvas background color handler ==============================
+// == Object lists ========================================================
+for (let i = 0; i < objectList.length; i++) {
+  objectList[i].querySelector(".object-label").addEventListener("click", () => {
+    objectList[i].classList.toggle("open");
+    objectList[i].querySelector(".fa-caret-down").classList.toggle("hide");
+    objectList[i].querySelector(".fa-caret-right").classList.toggle("hide");
+  });
+}
+
+function insertShapeToHTML(type) {
+  if (type === "line") {
+    lineObjects.querySelector(
+      ".items"
+    ).innerHTML += `<div class="list object-item">Line ${shapes.lines.length}</div>`;
+  }
+}
+
+// == Property handler ====================================================
+// Canvas color
 canvasColorInput.addEventListener("input", () => {
+  canvasColorValueSpan.innerHTML = canvasColorInput.value;
   canvasColor = hexToRGBA(canvasColorInput.value);
   gl.clearColor(...canvasColor);
-  gl.clear(gl.COLOR_BUFFER_BIT);
 });
 
-// == Change shape color handler ==========================================
+// Shape color
 shapeColorInput.addEventListener("input", () => {
+  shapeColorValueSpan.innerHTML = shapeColorInput.value;
   shapeColor = hexToRGBA(shapeColorInput.value);
 });
 
 // == Drawing state handler ===============================================
 canvas.addEventListener("mousedown", (e) => {
-  if (!selectedShapeMode || isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || isDrawing) {
     return;
   }
 
-  if (selectedShapeMode === "line") {
+  if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines.push(new Line(x, y, shapeColor));
-    shapes.lines[shapes.lines.length - 1].print();
+    insertShapeToHTML("line");
   }
 
   isDrawing = true;
 });
 
 canvas.addEventListener("mousemove", (e) => {
-  if (!isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
     return;
   }
 
-  if (selectedShapeMode === "line") {
+  if (selectedTool === "line") {
     const { x, y } = getMousePos(e);
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y);
   }
 });
 
 canvas.addEventListener("mouseup", (e) => {
-  if (!selectedShapeMode || !isDrawing) {
+  if (selectedTool === "cursor" || selectedTool === "canvas" || !isDrawing) {
     return;
   }
-
-  shapes.lines[shapes.lines.length - 1].print();
 
   isDrawing = false;
 });

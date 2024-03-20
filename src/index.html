@@ -5,48 +5,132 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>OpenGNTG | Drawing sandbox</title>
+
+  <!-- Styles -->
   <link rel="stylesheet" type="text/css" href="./styles/index.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/navbar.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/object-list.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/canvas.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/property-bar.css" />
+
+  <!-- Font awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet"
+    type='text/css'>
 </head>
 
 <body>
-  <h1>Drawing Sandbox</h1>
-  <h2>by OpenGNTG</h2>
+  <!-- Navbar -->
+  <nav>
+    <ul>
+      <!-- TODO: Implement dropdown menu -->
+      <li id="logo">
+        <span>OpenGNTG</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </li>
+      <li id="cursor" class="tool-btn active">Cursor</li>
+      <li id="canvas" class="tool-btn">Canvas</li>
+      <li id="line" class="tool-btn">Line</li>
+      <li id="square" class="tool-btn">Square</li>
+      <li id="rectangle" class="tool-btn">Rectangle</li>
+      <li id="polygon" class="tool-btn">Polygon</li>
+    </ul>
+  </nav>
 
-  <!-- Canvas color -->
-  <div id="canvas-color-container">
-    <label for="canvas-color">Canvas color</label>
-    <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
-    <span class="warning">Changing canvas color will also clear the canvas</span>
+  <!-- Object list -->
+  <div id="object-list-container">
+
+    <!-- Line objects -->
+    <div id="line-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Lines</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Square objects -->
+    <div id="square-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Squares</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+
+    <!-- Rectangle objects -->
+    <div id="rectangle-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Rectangles</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Polygon objects -->
+    <div id="polygon-objects" class="object-list">
+      <div class="object-label list">
+        <i class="fa-solid fa-caret-down hide"></i>
+        <i class="fa-solid fa-caret-right"></i>
+        <span>Polygons</span>
+      </div>
+      <div class="items">
+      </div>
+    </div>
+
+    <!-- Dev log box -->
+    <div id="dev-box">
+      <!-- Box to show error log -->
+      <div id="error-box">
+        <span>Error messages:</span>
+      </div>
+
+      <!-- Box to show console log -->
+      <div id="log-box">
+        <span>Log messages:</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property bar -->
+  <div class="property-bar-container">
+
+    <!-- Canvas property -->
+    <div id="canvas-properties" class="property-container">
+      <!-- Canvas color -->
+      <div class="property">
+        <label for="canvas-color">Background</label>
+        <div class="color-input">
+          <input type="color" id="canvas-color-input" name="canvas-color" value="#141414">
+          <span id="canvas-color-value">#141414</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Shape property -->
+    <div id="shape-properties" class="property-container active">
+      <!-- Shape color -->
+      <div class="property">
+        <label for="shape-color">Color</label>
+        <div class="color-input">
+          <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
+          <span id="shape-color-value">#e5e5e5</span>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <!-- Canvas -->
   <canvas>
 
   </canvas>
-
-  <!-- Shape buttons -->
-  <div class="shape-btn-container">
-    <button id="line" class="shape-btn active">Line</button>
-    <button id="square" class="shape-btn">Square</button>
-    <button id="rectangle" class="shape-btn">Rectangle</button>
-    <button id="polygon" class="shape-btn">Polygon</button>
-  </div>
-
-  <!-- Shape color -->
-  <div id="shape-color-container">
-    <label for="shape-color">Shape color</label>
-    <input type="color" id="shape-color-input" name="shape-color" value="#e5e5e5">
-  </div>
-
-  <!-- Box to show error log -->
-  <div id="error-box">
-    <span>Error messages:</span>
-  </div>
-
-  <!-- Box to show console log -->
-  <div id="log-box">
-    <span>Log messages:</span>
-  </div>
 
   <!-- Utilities -->
   <script src="./script/utils/log.js"></script>

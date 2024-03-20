@@ -1,0 +1,67 @@
+#object-list-container {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  top: 0;
+
+  width: 260px;
+  height: 100vh;
+  padding-top: 61px;
+  padding-bottom: 5px;
+  overflow-y: auto;
+
+  background-color: var(--secondary-color);
+  border-right: solid 1px var(--tertiary-color);
+}
+
+#dev-box {
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  height: fit-content;
+  margin-top: 5px;
+  padding: 16px 16px 16px 16px;
+  background-color: var(--secondary-color);
+  border-top: solid 1px var(--tertiary-color);
+
+  font-size: x-small;
+}
+
+.object-list .object-item {
+  display: none;
+}
+
+.object-list.open .object-item {
+  display: block;
+}
+
+.object-list .object-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.object-list .object-label i {
+  display: inline;
+  font-size: x-small;
+}
+
+.object-list .object-label i.hide {
+  display: none;
+}
+
+.object-list .list {
+  padding: 6px 16px;
+  border: solid 1px var(--secondary-color);
+
+  cursor: pointer;
+}
+
+.object-list .list:hover {
+  border: solid 1px var(--accent-color);
+}
+
+.object-list .object-item {
+  padding-left: 50px;
+}

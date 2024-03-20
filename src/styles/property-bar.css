@@ -1,0 +1,53 @@
+.property-bar-container {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  width: 260px;
+  height: 100vh;
+  padding-top: 56px;
+  overflow-y: auto;
+
+  background-color: var(--secondary-color);
+  border-left: solid 1px var(--tertiary-color);
+}
+
+.property-bar-container .property-container {
+  display: none;
+}
+
+.property-bar-container .property-container.active {
+  display: block;
+}
+
+.property-bar-container .property {
+  width: 100%;
+  height: fit-content;
+  padding: 16px;
+  border-bottom: solid 1px var(--tertiary-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.property-bar-container .color-input {
+  width: 100%;
+  height: fit-content;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.property-bar-container .color-input input {
+  cursor: pointer;
+}
+
+#canvas-color-input,
+#shape-color-input {
+  background-color: transparent;
+  border: none;
+  border-radius: 3px;
+}
