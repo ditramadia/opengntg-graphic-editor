@@ -190,7 +190,7 @@ function updatePropertyBar() {
       canvas.style.cursor = "crosshair";
       propertyContainer[1].classList.add("active");
     } else {
-      canvas.style.cursor = "default";
+      canvas.style.cursor = "move";
       propertyContainer[2].classList.add("active");
     }
   }

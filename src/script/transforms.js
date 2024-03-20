@@ -37,12 +37,15 @@ translateYInput.addEventListener("input", () => {
 // == Move ================================================================
 // Variables
 let isMoving = false;
+let initialMousePos = [];
 
 // Event handler
 // User has started to move a vertex
-canvas.addEventListener("mousedown", () => {
+canvas.addEventListener("mousedown", (e) => {
   if (!isMoving && isEditing) {
     isMoving = true;
+    const { x, y } = getMousePos(e);
+    initialMousePos = [x, y];
   }
 });
 
@@ -58,8 +61,8 @@ canvas.addEventListener("mousemove", (e) => {
     vertexIdx = selectedPointIndex[i];
     const initialX = initialPointsPosition[i][0];
     const initialY = initialPointsPosition[i][1];
-    const finalX = initialX + x;
-    const finalY = initialY + y;
+    const finalX = initialX + x - initialMousePos[0];
+    const finalY = initialY + y - initialMousePos[1];
     vertexObj.setVertexX(vertexIdx, finalX);
     vertexObj.setVertexY(vertexIdx, finalY);
   }
@@ -69,5 +72,6 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseup", () => {
   if (isMoving) {
     isMoving = false;
+    updateSelectedObjects();
   }
 });
