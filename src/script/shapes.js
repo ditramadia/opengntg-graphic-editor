@@ -46,6 +46,18 @@ class Shape {
     return this.vertexBuffer[i * 2 + 1];
   }
 
+  getVertexXPx(i) {
+    return this.vertexBufferPx[i * 2];
+  }
+
+  getVertexYPx(i) {
+    return this.vertexBufferPx[i * 2 + 1];
+  }
+
+  getRotation() {
+    return this.rotation;
+  }
+
   getColor(i) {
     return this.colorBuffer.slice(i * 4, i * 4 + 4);
   }
@@ -112,8 +124,8 @@ class Line extends Shape {
     showLog(`vertexBuffer: ${this.vertexBuffer}`);
     showLog(`vertexBufferPx: ${this.vertexBufferPx}`);
     showLog(`vertexBufferBase: ${this.vertexBufferBase}`);
-    showLog(`Rotation: ${this.vertexBufferBase}`);
-    showLog(`RotationBase: ${this.vertexBufferBase}`);
+    showLog(`Rotation: ${this.rotation}`);
+    showLog(`RotationBase: ${this.rotationBase}`);
     showLog(`Anchor: ${this.anchor}`);
   }
 }

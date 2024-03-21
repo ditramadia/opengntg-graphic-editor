@@ -16,12 +16,13 @@ const shapes = {
   lines: [],
 };
 
-// Selected sahpes states
-// let selectedShapes = [];
-let selectedPoints = [];
-let selectedPointIndex = [];
-let initialPointsPosition = [];
+// Selected shapes states
 let editColor = [0.9, 0.9, 0.9, 1.0];
+let selectedShapes = [];
+let selectedPoints = {
+  parentShape: [],
+  pointIndex: [],
+};
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -70,9 +71,11 @@ for (let i = 0; i < toolButtons.length; i++) {
 // Update selected objects
 function updateSelectedObjects() {
   // Clear the array
-  selectedPoints = [];
-  selectedPointIndex = [];
-  initialPointsPosition = [];
+  selectedShapes = [];
+  selectedPoints = {
+    parentShape: [],
+    pointIndex: [],
+  };
 
   // Insert all the checked objects id into an array
   const checkedObjectIds = [];
@@ -82,22 +85,23 @@ function updateSelectedObjects() {
     }
   });
 
-  // Insert all the checked objects into selectedPoints
+  // Insert all the checked objects into selectedShapes and selectedPoints
   checkedObjectIds.forEach((id) => {
     // Insert line object
     if (id.includes("l-") && id.includes("point")) {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
       const pointId = parseInt(id.split("-")[3]) - 1;
-      const pointObj = [obj.getVertexX(pointId), obj.getVertexY(pointId)];
 
-      selectedPoints.push(obj);
-      selectedPointIndex.push(pointId);
-      initialPointsPosition.push(pointObj);
+      selectedPoints.parentShape.push(obj);
+      selectedPoints.pointIndex.push(pointId);
+    } else {
+      const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
+      selectedShapes.push(obj);
     }
   });
 
   // Update mode
-  isEditing = selectedPoints.length > 0;
+  isEditing = selectedPoints.length > 0 || selectedShapes.length > 0;
 
   // Update property bar values
   updatePropertyValues();
@@ -189,15 +193,22 @@ function updatePropertyBar() {
 
 // Update property values
 function updatePropertyValues() {
-  if (selectedPoints.length === 0) {
+  if (!isEditing) {
     return;
   }
 
-  editColorInput.value = rgbaToHex(shapes.lines[0].getColor(0));
+  const firstSelected = selectedPoints.parentShape[0];
+  const firstSelectedIndex = selectedPoints.pointIndex[0];
+
+  // Update color
+  editColorInput.value = rgbaToHex(firstSelected.getColor(firstSelectedIndex));
   editColorValueSpan.innerHTML = editColorInput.value;
-  translateXInput.value = 0;
-  translateYInput.value = 0;
-  rotateInput.value = 0;
+  editColor = hexToRGBA(editColorInput.value);
+
+  // Update transform
+  translateXInput.value = firstSelected.getVertexXPx(firstSelectedIndex);
+  translateYInput.value = firstSelected.getVertexYPx(firstSelectedIndex);
+  rotateInput.value = firstSelected.getRotation();
 }
 
 // Canvas color
@@ -266,8 +277,6 @@ canvas.addEventListener("mouseup", (e) => {
 
   if (selectedTool === "line") {
     shapes.lines[shapes.lines.length - 1].updateCentroid();
-    // showLog("Centroid updated!");
-    // showLog(shapes.lines[shapes.lines.length - 1].getAnchor());
   }
 
   isDrawing = false;
