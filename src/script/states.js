@@ -209,8 +209,12 @@ function updatePropertyValues() {
   editColor = hexToRGBA(editColorInput.value);
 
   // Update transform
-  translateXInput.value = firstSelected.getVertexXPx(firstSelectedIndex);
-  translateYInput.value = firstSelected.getVertexYPx(firstSelectedIndex);
+  translateXInput.value = Math.floor(
+    firstSelected.getVertexXPx(firstSelectedIndex)
+  );
+  translateYInput.value = Math.floor(
+    firstSelected.getVertexYPx(firstSelectedIndex)
+  );
   rotateInput.value = firstSelected.getRotation();
 }
 

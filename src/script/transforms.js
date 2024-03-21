@@ -72,15 +72,17 @@ canvas.addEventListener("mousemove", (e) => {
   }
 
   const { x, y } = getMousePos(e);
-  for (let i = 0; i < selectedPoints.length; i++) {
-    vertexObj = selectedPoints[i];
-    vertexIdx = selectedPointIndex[i];
-    const initialX = initialPointsPosition[i][0];
-    const initialY = initialPointsPosition[i][1];
-    const finalX = initialX + x - initialMousePos[0];
-    const finalY = initialY + y - initialMousePos[1];
-    vertexObj.setVertexX(vertexIdx, finalX);
-    vertexObj.setVertexY(vertexIdx, finalY);
+  const diffX = x - initialMousePos[0];
+  const diffY = y - initialMousePos[1];
+
+  for (let i = 0; i < selectedPoints.parentShape.length; i++) {
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
+
+    vertexObj.translateX(vertexIdx, diffX);
+    vertexObj.translateY(vertexIdx, diffY);
+
+    updatePropertyValues();
   }
 });
 
@@ -88,7 +90,10 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseup", () => {
   if (isMoving) {
     isMoving = false;
-    updateSelectedObjects();
+  }
+
+  for (let i = 0; i < selectedPoints.parentShape.length; i++) {
+    selectedPoints.parentShape[i].updateVertexBase();
   }
 });
 
