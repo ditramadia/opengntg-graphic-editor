@@ -3,8 +3,8 @@ class Shape {
     this.id = id;
     this.numOfVertex = 0;
     this.vertexBuffer = [];
-    this.vertexBufferPx = [];
     this.vertexBufferBase = [];
+    this.vertexPx = [];
     this.rotation = 0;
     this.rotationBase = 0;
     this.colorBuffer = [];
@@ -17,12 +17,12 @@ class Shape {
 
   setVertexX(i, x, xPx) {
     this.vertexBuffer[i * 2] = x;
-    this.vertexBufferPx[i * 2] = xPx;
+    this.vertexPx[i * 2] = xPx;
   }
 
   setVertexY(i, y, yPx) {
     this.vertexBuffer[i * 2 + 1] = y;
-    this.vertexBufferPx[i * 2 + 1] = yPx;
+    this.vertexPx[i * 2 + 1] = yPx;
   }
 
   setColor(i, rgba) {
@@ -49,11 +49,19 @@ class Shape {
   }
 
   getVertexXPx(i) {
-    return this.vertexBufferPx[i * 2];
+    return this.vertexPx[i * 2];
   }
 
   getVertexYPx(i) {
-    return this.vertexBufferPx[i * 2 + 1];
+    return this.vertexPx[i * 2 + 1];
+  }
+
+  getVertexXBase(i) {
+    return this.vertexBufferBase[i * 2];
+  }
+
+  getVertexYBase(i) {
+    return this.vertexBufferBase[i * 2 + 1];
   }
 
   getRotation() {
@@ -66,6 +74,22 @@ class Shape {
 
   getAnchor() {
     return this.anchor;
+  }
+
+  translateX(i, diffX) {
+    this.setVertexX(
+      i,
+      this.vertexBufferBase[i * 2] + diffX,
+      denormalizeX(this.vertexBufferBase[i * 2] + diffX)
+    );
+  }
+
+  translateY(i, diffY) {
+    this.setVertexY(
+      i,
+      this.vertexBufferBase[i * 2 + 1] + diffY,
+      denormalizeY(this.vertexBufferBase[i * 2 + 1] + diffY)
+    );
   }
 
   updateCentroid() {
@@ -94,7 +118,7 @@ class Line extends Shape {
 
     this.vertexBuffer = [x, y, x, y];
     this.vertexBufferBase = this.vertexBuffer;
-    this.vertexBufferPx = [xPx, yPx, xPx, yPx];
+    this.vertexPx = [xPx, yPx, xPx, yPx];
     this.colorBuffer = [...rgbaColor, ...rgbaColor];
     this.numOfVertex = this.vertexBuffer.length / 2;
     this.anchor = [x, y];
@@ -115,9 +139,9 @@ class Line extends Shape {
 
   setEndVertex(x, y, xPx, yPx) {
     this.vertexBuffer[2] = x;
-    this.vertexBufferPx[2] = xPx;
+    this.vertexPx[2] = xPx;
     this.vertexBuffer[3] = y;
-    this.vertexBufferPx[3] = yPx;
+    this.vertexPx[3] = yPx;
   }
 
   print() {
@@ -126,7 +150,7 @@ class Line extends Shape {
     showLog(`numOfVertex: ${this.numOfVertex}`);
     showLog(`colorBuffer: ${this.colorBuffer}`);
     showLog(`vertexBuffer: ${this.vertexBuffer}`);
-    showLog(`vertexBufferPx: ${this.vertexBufferPx}`);
+    showLog(`vertexPx: ${this.vertexPx}`);
     showLog(`vertexBufferBase: ${this.vertexBufferBase}`);
     showLog(`Rotation: ${this.rotation}`);
     showLog(`RotationBase: ${this.rotationBase}`);

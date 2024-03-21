@@ -23,6 +23,7 @@ let selectedPoints = {
   parentShape: [],
   pointIndex: [],
 };
+let allShapesVertex = [];
 
 // == WebGL state =========================================================
 // Clear the color and depth buffer
@@ -99,6 +100,7 @@ function updateSelectedObjects() {
       selectedShapes.push(obj);
     }
   });
+  allShapesVertex = selectedPoints.parentShape.concat(selectedShapes);
 
   // Update mode
   isEditing =
@@ -198,8 +200,8 @@ function updatePropertyValues() {
     return;
   }
 
-  const firstSelected = selectedPoints.parentShape[0];
-  const firstSelectedIndex = selectedPoints.pointIndex[0];
+  const firstSelected = allShapesVertex[0];
+  const firstSelectedIndex = selectedPoints.pointIndex[0] || 0;
 
   // Update color
   editColorInput.value = rgbaToHex(firstSelected.getColor(firstSelectedIndex));

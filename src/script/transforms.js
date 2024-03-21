@@ -11,30 +11,42 @@ editColorInput.addEventListener("input", () => {
 });
 
 // == Translate X =========================================================
-translateXInput.addEventListener("input", () => {
-  const xValue = translateXInput.value / 100;
+translateXInput.addEventListener("focusout", () => {
+  const valuePx = translateXInput.value;
+  const valueX = normalizeX(valuePx);
+
+  const initialX = allShapesVertex[0].getVertexXBase(
+    selectedPoints.pointIndex[0] || 0
+  );
+
+  const diffX = valueX - initialX;
 
   // Translate every selected vertices
-  for (let i = 0; i < selectedPoints.length; i++) {
-    vertexObj = selectedPoints[i];
-    vertexIdx = selectedPointIndex[i];
-    const initialX = initialPointsPosition[i][0];
-    const finalX = initialX + xValue;
-    vertexObj.setVertexX(vertexIdx, finalX);
+  for (let i = 0; i < selectedPoints.parentShape.length; i++) {
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
+
+    vertexObj.translateX(vertexIdx, diffX);
   }
 });
 
-// == Translate X =========================================================
-translateYInput.addEventListener("input", () => {
-  const yValue = translateYInput.value / 100;
+// == Translate Y =========================================================
+translateYInput.addEventListener("focusout", () => {
+  const valuePy = translateYInput.value;
+  const valueY = normalizeY(valuePy);
+
+  const initialY = allShapesVertex[0].getVertexYBase(
+    selectedPoints.pointIndex[0] || 0
+  );
+
+  const diffY = valueY - initialY;
 
   // Translate every selected vertices
-  for (let i = 0; i < selectedPoints.length; i++) {
-    vertexObj = selectedPoints[i];
-    vertexIdx = selectedPointIndex[i];
-    const initialY = initialPointsPosition[i][1];
-    const finalY = initialY + yValue;
-    vertexObj.setVertexY(vertexIdx, finalY);
+  for (let i = 0; i < selectedPoints.parentShape.length; i++) {
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
+
+    vertexObj.translateY(vertexIdx, diffY);
   }
 });
 
