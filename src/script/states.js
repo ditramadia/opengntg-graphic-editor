@@ -101,7 +101,8 @@ function updateSelectedObjects() {
   });
 
   // Update mode
-  isEditing = selectedPoints.length > 0 || selectedShapes.length > 0;
+  isEditing =
+    selectedPoints.parentShape.length > 0 || selectedShapes.length > 0;
 
   // Update property bar values
   updatePropertyValues();
@@ -259,8 +260,8 @@ canvas.addEventListener("mousemove", (e) => {
   }
 
   if (selectedTool === "line") {
-    const { x, y } = getMousePos(e);
-    shapes.lines[shapes.lines.length - 1].setEndVertex(x, y);
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    shapes.lines[shapes.lines.length - 1].setEndVertex(x, y, x_pix, y_pix);
   }
 });
 

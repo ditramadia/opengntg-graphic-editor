@@ -3,9 +3,9 @@ editColorInput.addEventListener("input", () => {
   const newColor = hexToRGBA(editColorInput.value);
 
   // Change every selected vertices
-  for (let i = 0; i < selectedPoints.length; i++) {
-    vertexObj = selectedPoints[i];
-    vertexIdx = selectedPointIndex[i];
+  for (let i = 0; i < selectedPoints.parentShape.length; i++) {
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
     vertexObj.setColor(vertexIdx, newColor);
   }
 });

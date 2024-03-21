@@ -11,16 +11,18 @@ class Shape {
     this.anchor = [];
   }
 
-  setEndVertex(x, y) {
+  setEndVertex(x, y, xPx, yPx) {
     throw new Error("Must be implemented");
   }
 
-  setVertexX(i, x) {
+  setVertexX(i, x, xPx) {
     this.vertexBuffer[i * 2] = x;
+    this.vertexBufferPx[i * 2] = xPx;
   }
 
-  setVertexY(i, y) {
+  setVertexY(i, y, yPx) {
     this.vertexBuffer[i * 2 + 1] = y;
+    this.vertexBufferPx[i * 2 + 1] = yPx;
   }
 
   setColor(i, rgba) {
@@ -111,9 +113,11 @@ class Line extends Shape {
     }
   }
 
-  setEndVertex(x, y) {
+  setEndVertex(x, y, xPx, yPx) {
     this.vertexBuffer[2] = x;
+    this.vertexBufferPx[2] = xPx;
     this.vertexBuffer[3] = y;
+    this.vertexBufferPx[3] = yPx;
   }
 
   print() {
