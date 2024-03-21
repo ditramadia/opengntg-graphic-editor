@@ -24,7 +24,7 @@ function normalizeCoor(x, y) {
   return { n_x, n_y };
 }
 
-// Get current mouse position relevant to the canvas
+// Get current mouse position
 function getMousePos(e) {
   const pos = canvas.getBoundingClientRect();
 
@@ -33,5 +33,5 @@ function getMousePos(e) {
 
   const { n_x: x, n_y: y } = normalizeCoor(x_pix, y_pix);
 
-  return { x, y };
+  return { x, y, x_pix, y_pix };
 }

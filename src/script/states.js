@@ -1,41 +1,23 @@
-// == Selectors ===========================================================
-// Canvas
-const canvas = document.querySelector("canvas");
-
-// Tool buttons
-const toolButtons = document.querySelectorAll(".tool-btn");
-
-// Object list
-const lineObjects = document.querySelector("#line-objects");
-const squareObjects = document.querySelector("#square-objects");
-const rectangleObjects = document.querySelector("#rectangle-objects");
-const polygonObjects = document.querySelector("#polygon-objects");
-
-// Properties
-const propertyContainer = document.querySelectorAll(".property-container");
-const canvasColorInput = document.querySelector("#canvas-color-input");
-const canvasColorValueSpan = document.querySelector("#canvas-color-value");
-const shapeColorInput = document.querySelector("#shape-color-input");
-const shapeColorValueSpan = document.querySelector("#shape-color-value");
-const editColorInput = document.querySelector("#edit-color-input");
-const editColorValueSpan = document.querySelector("#edit-color-value");
-
-// == State variables =====================================================
+// == Global state ========================================================
 // WebGL
 let gl = undefined;
 
-// Canvas states
+// Tool states
 let selectedTool = "cursor";
-let canvasColor = [0.08, 0.08, 0.08, 1.0];
-let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 let isEditing = false;
+
+// Canvas states
+let canvasColor = [0.08, 0.08, 0.08, 1.0];
+
+// Shape states
+let shapeColor = [0.9, 0.9, 0.9, 1.0];
 const shapes = {
   lines: [],
 };
 
-// Selected states
-let initialShapeRotation = [];
+// Selected sahpes states
+// let selectedShapes = [];
 let selectedPoints = [];
 let selectedPointIndex = [];
 let initialPointsPosition = [];
@@ -117,22 +99,8 @@ function updateSelectedObjects() {
   // Update mode
   isEditing = selectedPoints.length > 0;
 
-  // Update edit color
-  editColor = shapes.lines[0].getColor(0);
-  editColorInput.value = rgbaToHex(editColor);
-  editColorValueSpan.innerHTML = editColorInput.value;
-
-  // showLog("Start vertex:");
-  // showLog(selectedPoints[0].getVertexX(0));
-  // showLog(selectedPoints[0].getVertexY(0));
-
-  // showLog("End vertex:");
-  // showLog(selectedPoints[0].getVertexX(1));
-  // showLog(selectedPoints[0].getVertexY(1));
-
-  // showLog("Anchor:");
-  // showLog(selectedPoints[0].getAnchor()[0]);
-  // showLog(selectedPoints[0].getAnchor()[1]);
+  // Update property bar values
+  updatePropertyValues();
 
   // Update property bar
   updatePropertyBar();
@@ -195,7 +163,7 @@ function insertShapeToHTML(type, obj) {
 }
 
 // == Property handler ====================================================
-// Property bar
+// Update property bar
 function updatePropertyBar() {
   for (let j = 0; j < propertyContainer.length; j++) {
     propertyContainer[j].classList.remove("active");
@@ -217,6 +185,19 @@ function updatePropertyBar() {
       propertyContainer[2].classList.add("active");
     }
   }
+}
+
+// Update property values
+function updatePropertyValues() {
+  if (selectedPoints.length === 0) {
+    return;
+  }
+
+  editColorInput.value = rgbaToHex(shapes.lines[0].getColor(0));
+  editColorValueSpan.innerHTML = editColorInput.value;
+  translateXInput.value = 0;
+  translateYInput.value = 0;
+  rotateInput.value = 0;
 }
 
 // Canvas color
@@ -245,9 +226,9 @@ canvas.addEventListener("mousedown", (e) => {
   }
 
   if (selectedTool === "line") {
-    const { x, y } = getMousePos(e);
+    const { x, y, x_pix, y_pix } = getMousePos(e);
     const newId = shapes.lines.length + 1;
-    const newLine = new Line(x, y, shapeColor, newId);
+    const newLine = new Line(newId, x, y, x_pix, y_pix, shapeColor);
     shapes.lines.push(newLine);
     insertShapeToHTML("line", newLine);
   }

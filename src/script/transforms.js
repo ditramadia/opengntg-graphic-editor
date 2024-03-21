@@ -11,10 +11,6 @@ editColorInput.addEventListener("input", () => {
 });
 
 // == Translate X =========================================================
-// Variables
-const translateXInput = document.querySelector("#translate-x-input");
-
-// Event handler
 translateXInput.addEventListener("input", () => {
   const xValue = translateXInput.value / 100;
 
@@ -29,10 +25,6 @@ translateXInput.addEventListener("input", () => {
 });
 
 // == Translate X =========================================================
-// Variables
-const translateYInput = document.querySelector("#translate-y-input");
-
-// Event handler
 translateYInput.addEventListener("input", () => {
   const yValue = translateYInput.value / 100;
 
@@ -89,10 +81,6 @@ canvas.addEventListener("mouseup", () => {
 });
 
 // == Rotate ==============================================================
-// Variables
-const rotateInput = document.querySelector("#rotate-input");
-
-// Event handler
 rotateInput.addEventListener("input", () => {
   const rotation = (rotateInput.value * Math.PI) / 180;
   const rotatedObjectsId = [];

@@ -1,21 +1,18 @@
 class Shape {
-  constructor(x, y, rgbaColor, id) {
+  constructor(id) {
     this.id = id;
-    this.vertexBuffer = [];
-    this.colorBuffer = [];
-    this.anchor = [x, y];
     this.numOfVertex = 0;
+    this.vertexBuffer = [];
+    this.vertexBufferPx = [];
+    this.vertexBufferBase = [];
+    this.rotation = 0;
+    this.rotationBase = 0;
+    this.colorBuffer = [];
+    this.anchor = [];
   }
 
   setEndVertex(x, y) {
     throw new Error("Must be implemented");
-  }
-
-  setColor(i, rgba) {
-    this.colorBuffer[i * 4] = rgba[0];
-    this.colorBuffer[i * 4 + 1] = rgba[1];
-    this.colorBuffer[i * 4 + 2] = rgba[2];
-    this.colorBuffer[i * 4 + 3] = rgba[3];
   }
 
   setVertexX(i, x) {
@@ -26,8 +23,19 @@ class Shape {
     this.vertexBuffer[i * 2 + 1] = y;
   }
 
-  getColor(i) {
-    return this.colorBuffer.slice(i * 4, i * 4 + 4);
+  setColor(i, rgba) {
+    this.colorBuffer[i * 4] = rgba[0];
+    this.colorBuffer[i * 4 + 1] = rgba[1];
+    this.colorBuffer[i * 4 + 2] = rgba[2];
+    this.colorBuffer[i * 4 + 3] = rgba[3];
+  }
+
+  getId() {
+    return this.id;
+  }
+
+  getNumOfVertex() {
+    return this.numOfVertex;
   }
 
   getVertexX(i) {
@@ -38,12 +46,12 @@ class Shape {
     return this.vertexBuffer[i * 2 + 1];
   }
 
-  getAnchor() {
-    return this.anchor;
+  getColor(i) {
+    return this.colorBuffer.slice(i * 4, i * 4 + 4);
   }
 
-  getNumOfVertex() {
-    return this.numOfVertex;
+  getAnchor() {
+    return this.anchor;
   }
 
   updateCentroid() {
@@ -67,11 +75,15 @@ class Shape {
 }
 
 class Line extends Shape {
-  constructor(x, y, rgbaColor, id) {
-    super(x, y, rgbaColor, id);
+  constructor(id, x, y, xPx, yPx, rgbaColor) {
+    super(id);
+
     this.vertexBuffer = [x, y, x, y];
+    this.vertexBufferBase = this.vertexBuffer;
+    this.vertexBufferPx = [xPx, yPx, xPx, yPx];
     this.colorBuffer = [...rgbaColor, ...rgbaColor];
     this.numOfVertex = this.vertexBuffer.length / 2;
+    this.anchor = [x, y];
   }
 
   render(program) {
@@ -95,9 +107,13 @@ class Line extends Shape {
   print() {
     showLog("\nLine");
     showLog(`id: ${this.id}`);
-    showLog(`vertexBuffer: ${this.vertexBuffer}`);
     showLog(`numOfVertex: ${this.numOfVertex}`);
-    showLog(`color: ${this.color}`);
     showLog(`colorBuffer: ${this.colorBuffer}`);
+    showLog(`vertexBuffer: ${this.vertexBuffer}`);
+    showLog(`vertexBufferPx: ${this.vertexBufferPx}`);
+    showLog(`vertexBufferBase: ${this.vertexBufferBase}`);
+    showLog(`Rotation: ${this.vertexBufferBase}`);
+    showLog(`RotationBase: ${this.vertexBufferBase}`);
+    showLog(`Anchor: ${this.anchor}`);
   }
 }
