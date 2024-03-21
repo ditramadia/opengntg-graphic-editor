@@ -130,7 +130,7 @@
     </div>
 
     <!-- Edit property -->
-    <div id="edit-properties" class="property-container">
+    <div id="edit-properties" class="property-container active">
       <!-- Edit color -->
       <div class="property">
         <label for="edit-color">Color</label>
@@ -140,9 +140,9 @@
         </div>
       </div>
 
-      <!-- Translate -->
+      <!-- Shape -->
       <div class="property">
-        <label>Position</label>
+        <label>Shape</label>
         <div class="label-value">
           <label for="translate-x">X</label>
           <input type="number" id="translate-x-input" class="prop-input" name="translate-x" value="0" placeholder="0">
@@ -151,6 +151,13 @@
         <div class="label-value">
           <label for="translate">Y</label>
           <input type="number" id="translate-y-input" class="prop-input" name="translate-y" value="0" placeholder="0">
+        </div>
+
+        <div class="label-value">
+          <label for="rotation">
+            <img src="../public/angle-ic.svg" />
+          </label>
+          <input type="number" id="rotate-input" class="prop-input" name="rotate" value="0" placeholder="0">
         </div>
       </div>
     </div>

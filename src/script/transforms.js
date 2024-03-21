@@ -87,3 +87,42 @@ canvas.addEventListener("mouseup", () => {
     updateSelectedObjects();
   }
 });
+
+// == Rotate ==============================================================
+// Variables
+const rotateInput = document.querySelector("#rotate-input");
+
+// Event handler
+rotateInput.addEventListener("input", () => {
+  const rotation = (rotateInput.value * Math.PI) / 180;
+  const rotatedObjectsId = [];
+  for (let i = 0; i < selectedPoints.length; i++) {
+    if (rotatedObjectsId.includes(selectedPoints[i].id)) {
+      continue;
+    }
+
+    const obj = selectedPoints[i];
+
+    for (let j = 0; j < obj.getNumOfVertex(); j++) {
+      const initialX = initialPointsPosition[j][0];
+      const initialY = initialPointsPosition[j][1];
+
+      showLog(obj.getAnchor());
+
+      obj.setVertexX(
+        j,
+        initialX * Math.cos(rotation) -
+          initialY * Math.sin(rotation) +
+          obj.getAnchor()[0]
+      );
+      obj.setVertexY(
+        j,
+        initialX * Math.sin(rotation) +
+          initialY * Math.cos(rotation) +
+          obj.getAnchor()[1]
+      );
+    }
+
+    rotatedObjectsId.push(obj.id);
+  }
+});

@@ -21,16 +21,21 @@ const editColorInput = document.querySelector("#edit-color-input");
 const editColorValueSpan = document.querySelector("#edit-color-value");
 
 // == State variables =====================================================
+// WebGL
 let gl = undefined;
-let canvasColor = [0.08, 0.08, 0.08, 1.0];
+
+// Canvas states
 let selectedTool = "cursor";
+let canvasColor = [0.08, 0.08, 0.08, 1.0];
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 let isDrawing = false;
 let isEditing = false;
 const shapes = {
   lines: [],
 };
-// let selectedShapes = []; // Unused?
+
+// Selected states
+let initialShapeRotation = [];
 let selectedPoints = [];
 let selectedPointIndex = [];
 let initialPointsPosition = [];
@@ -83,7 +88,6 @@ for (let i = 0; i < toolButtons.length; i++) {
 // Update selected objects
 function updateSelectedObjects() {
   // Clear the array
-  // selectedShapes = [];
   selectedPoints = [];
   selectedPointIndex = [];
   initialPointsPosition = [];
@@ -98,6 +102,7 @@ function updateSelectedObjects() {
 
   // Insert all the checked objects into selectedPoints
   checkedObjectIds.forEach((id) => {
+    // Insert line object
     if (id.includes("l-") && id.includes("point")) {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
       const pointId = parseInt(id.split("-")[3]) - 1;
@@ -116,6 +121,18 @@ function updateSelectedObjects() {
   editColor = shapes.lines[0].getColor(0);
   editColorInput.value = rgbaToHex(editColor);
   editColorValueSpan.innerHTML = editColorInput.value;
+
+  // showLog("Start vertex:");
+  // showLog(selectedPoints[0].getVertexX(0));
+  // showLog(selectedPoints[0].getVertexY(0));
+
+  // showLog("End vertex:");
+  // showLog(selectedPoints[0].getVertexX(1));
+  // showLog(selectedPoints[0].getVertexY(1));
+
+  // showLog("Anchor:");
+  // showLog(selectedPoints[0].getAnchor()[0]);
+  // showLog(selectedPoints[0].getAnchor()[1]);
 
   // Update property bar
   updatePropertyBar();
@@ -264,6 +281,12 @@ canvas.addEventListener("mouseup", (e) => {
     isEditing
   ) {
     return;
+  }
+
+  if (selectedTool === "line") {
+    shapes.lines[shapes.lines.length - 1].updateCentroid();
+    // showLog("Centroid updated!");
+    // showLog(shapes.lines[shapes.lines.length - 1].getAnchor());
   }
 
   isDrawing = false;

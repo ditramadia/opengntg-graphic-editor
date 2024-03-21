@@ -38,6 +38,25 @@ class Shape {
     return this.vertexBuffer[i * 2 + 1];
   }
 
+  getAnchor() {
+    return this.anchor;
+  }
+
+  getNumOfVertex() {
+    return this.numOfVertex;
+  }
+
+  updateCentroid() {
+    let tempX = 0;
+    let tempY = 0;
+    for (let i = 0; i < this.vertexBuffer.length; i += 2) {
+      tempX += this.vertexBuffer[i];
+      tempY += this.vertexBuffer[i + 1];
+    }
+    this.anchor[0] = tempX / this.numOfVertex;
+    this.anchor[1] = tempY / this.numOfVertex;
+  }
+
   render() {
     throw new Error("Must be implemented");
   }

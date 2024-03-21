@@ -76,3 +76,17 @@
   background-color: var(--secondary-color);
   color: var(--text-color);
 }
+
+.label-value img {
+  width: 12px;
+  height: 12px;
+}
+
+.label-value label {
+  width: 15px;
+  height: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: left;
+}
