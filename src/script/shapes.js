@@ -45,6 +45,10 @@ class Shape {
     throw new Error("Must be implemented");
   }
 
+  setHeight() {
+    throw new Error("Must be implemented");
+  }
+
   setColor(i, rgba) {
     this.colorBuffer[i * 4] = rgba[0];
     this.colorBuffer[i * 4 + 1] = rgba[1];
@@ -258,6 +262,108 @@ class Line extends Shape {
   }
 }
 
+class Rectangle extends Shape {
+  constructor(id, x, y, xPx, yPx, rgbaColor) {
+    super(id);
+
+    this.vertexBuffer = [x, y, x, y, x, y, x, y];
+    this.vertexBufferBase = [x, y, x, y, x, y, x, y];
+    this.vertexPx = [xPx, yPx, xPx, yPx, xPx, yPx, xPx, yPx];
+    this.colorBuffer = [
+      ...rgbaColor,
+      ...rgbaColor,
+      ...rgbaColor,
+      ...rgbaColor,
+    ];
+    this.numOfVertex = 4;
+    this.anchor = [x, y];
+  }
+
+  render(program) {
+    // Render vertex buffer
+    render(gl, program, "vertexPosition", this.vertexBuffer, 2);
+
+    // Render colorBuffer
+    render(gl, program, "vertexColor", this.colorBuffer, 4);
+    
+    // Draw the rectangle
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  }
+
+  setEndVertex(x, y, xPx, yPx) {
+    const lastVertexIdx = 3;
+    const upperRightIdx = 1;
+    const lowerLeftIdx = 2;
+    const firstVertexIdx = 0;
+
+    this.setVertexX(lastVertexIdx, x, xPx);
+    this.setVertexY(lastVertexIdx, y, yPx);
+
+    this.setVertexX(upperRightIdx, x, xPx);
+    this.setVertexY(upperRightIdx, this.getVertexY(firstVertexIdx), this.getVertexYPx(firstVertexIdx));
+
+    this.setVertexX(lowerLeftIdx, this.getVertexX(firstVertexIdx), this.getVertexXPx(firstVertexIdx));
+    this.setVertexY(lowerLeftIdx, y, yPx);  
+
+    this.updateVertexBase();
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
+
+  setWidth(newWidth) {
+    const halfDiff = (newWidth - this.width) / 2;
+
+    for (let i = 0; i < this.numOfVertex; i++) {
+      if (i % 2 === 0) {
+        const finalX = this.getVertexXPx(i) - halfDiff;
+        this.setVertexX(i, normalizeX(finalX), finalX);
+      } else {
+        const finalX = this.getVertexXPx(i) + halfDiff;
+        this.setVertexX(i, normalizeX(finalX), finalX);
+      }
+    }
+
+    this.updateWidth();
+    this.updateVertexBase();
+  }
+
+  setHeight(newHeight) {
+    const halfDiff = (newHeight - this.height) / 2;
+
+    for (let i = 0; i < this.numOfVertex; i++) {
+      if (i < 2) {
+        const finalY = this.getVertexYPx(i) - halfDiff;
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      } else {
+        const finalY = this.getVertexYPx(i) + halfDiff;
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      }
+    }
+
+    this.updateHeight();
+    this.updateVertexBase();
+  }
+
+  updateWidth() {
+    this.width = distance2Vec(
+      this.getVertexXPx(0),
+      this.getVertexYPx(0),
+      this.getVertexXPx(1),
+      this.getVertexYPx(1)
+    );
+  }
+
+  updateHeight() {
+    this.height = distance2Vec(
+      this.getVertexXPx(0),
+      this.getVertexYPx(0),
+      this.getVertexXPx(2),
+      this.getVertexYPx(2)
+    );
+  }
+}
+
 class Polygon extends Shape {
   constructor(id, x, y, xPx, yPx, rgbaColor) {
     super(id);
@@ -346,7 +452,6 @@ class Polygon extends Shape {
     this.updateWidth();
     this.updateHeight();
   }
-
   render(program) {
     // Render vertex buffer
     render(gl, program, "vertexPosition", this.vertexBuffer, 2);

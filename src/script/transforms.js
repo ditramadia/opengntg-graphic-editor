@@ -21,6 +21,17 @@ widthInput.addEventListener("focusout", () => {
   }
 });
 
+// == Height ==============================================================
+heightInput.addEventListener("focusout", () => {
+  const newHeight = heightInput.value;
+
+  // Change every selected shape
+  for (let i = 0; i < selectedShapes.length; i++) {
+    vertexObj = selectedShapes[i];
+    vertexObj.setHeight(newHeight);
+  }
+});
+
 // == Translate X =========================================================
 translateXInput.addEventListener("focusout", () => {
   const valuePx = translateXInput.value;

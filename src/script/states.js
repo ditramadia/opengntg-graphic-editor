@@ -16,6 +16,7 @@ let canvasColor = [0.08, 0.08, 0.08, 1.0];
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 const shapes = {
   lines: [],
+  rectangles: [],
   polygons: [],
 };
 
@@ -91,7 +92,7 @@ function updateSelectedObjects() {
 
   // Insert all the checked objects into selectedShapes and selectedPoints
   checkedObjectIds.forEach((id) => {
-    // Insert line object
+    // Insert line rectangle
     if (id.includes("l-") && id.includes("point")) {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
       const pointId = parseInt(id.split("-")[3]) - 1;
@@ -100,6 +101,18 @@ function updateSelectedObjects() {
       selectedPoints.pointIndex.push(pointId);
     } else if (id.includes("l-")) {
       const obj = shapes.lines[parseInt(id.split("-")[1]) - 1];
+      selectedShapes.push(obj);
+    }
+
+    // Insert rectangle rectangle
+    if (id.includes("r-") && id.includes("point")) {
+      const obj = shapes.rectangles[parseInt(id.split("-")[1]) - 1];
+      const pointId = parseInt(id.split("-")[3]) - 1;
+
+      selectedPoints.parentShape.push(obj);
+      selectedPoints.pointIndex.push(pointId);
+    } else if (id.includes("r-")) {
+      const obj = shapes.rectangles[parseInt(id.split("-")[1]) - 1];
       selectedShapes.push(obj);
     }
 
@@ -137,12 +150,12 @@ function updateSelectedObjects() {
   updatePropertyBar();
 }
 
-// Insert a newly created object into HTML object list
+// Insert a newly created rectangle into HTML rectangle list
 function insertShapeToHTML(type, obj) {
   if (type === "line") {
-    // Append new line to line object list
+    // Append new line to line rectangle list
     const newLine = document.createElement("div");
-    newLine.innerHTML = `<div class="object-item list">
+    newLine.innerHTML = `<div class="rectangle-item list">
     <input type="checkbox" id="l-${obj.id}" name="l-${obj.id}" value="l-${obj.id}" />
     <label for="l-${obj.id}">Line ${obj.id}</label>
     </div>`;
@@ -162,6 +175,60 @@ function insertShapeToHTML(type, obj) {
 
     // Handle shape checkbox event
     const shapeInput = document.querySelector(`#l-${obj.id}`);
+    shapeInput.addEventListener("change", () => {
+      if (shapeInput.checked) {
+        // Insert the shape into selectedShapes
+        // selectedShapes.push(shapeInput.id);
+
+        // Check all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = true;
+        });
+      } else {
+        // Remove the shape from selectedShapes
+        // selectedShapes.splice(selectedShapes.indexOf(shapeInput.id), 1);
+
+        // Uncheck all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = false;
+        });
+      }
+
+      updateSelectedObjects();
+    });
+
+    // Handle point checkbox event
+    pointInputs.forEach((point) => {
+      point.addEventListener("change", () => {
+        // Update selected objects
+        updateSelectedObjects();
+      });
+    });
+  }
+
+  if (type === "rectangle") {
+    // Append new rectangle to rectangle rectangle list
+    const newRectangle = document.createElement("div");
+    newRectangle.innerHTML = `<div class="rectangle-item list">
+    <input type="checkbox" id="r-${obj.id}" name="r-${obj.id}" value="r-${obj.id}" />
+    <label for="r-${obj.id}">Rectangle ${obj.id}</label>
+    </div>`;
+    rectangleObjects.querySelector(".items").appendChild(newRectangle);
+
+    // Append new rectangle points to rectangle point list
+    for (let i = 1; i <= obj.numOfVertex; i++) {
+      newRectangle.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="r-${obj.id}-point-${i}" name="r-${obj.id}-point" value="r-${obj.id}-point-${i}" />
+      <label for="r-${obj.id}-point-${i}">Point ${i}</label>
+    </div>`;
+    }
+
+    const pointInputs = document.querySelectorAll(
+      `input[name="r-${obj.id}-point"]`
+    );
+
+    // Handle shape checkbox event
+    const shapeInput = document.querySelector(`#r-${obj.id}`);
     shapeInput.addEventListener("change", () => {
       if (shapeInput.checked) {
         // Insert the shape into selectedShapes
@@ -380,6 +447,15 @@ canvas.addEventListener("mousedown", (e) => {
     shapes.lines.push(newLine);
     insertShapeToHTML("line", newLine);
   }
+
+  if (selectedTool === 'rectangle') {
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    const newId = shapes.rectangles.length + 1;
+    const newRectangle = new Rectangle(newId, x, y, x_pix, y_pix, shapeColor);
+    shapes.rectangles.push(newRectangle);
+    insertShapeToHTML("rectangle", newRectangle);
+  }
+
   isDrawing = true;
 });
 
@@ -436,6 +512,11 @@ canvas.addEventListener("mousemove", (e) => {
   if (selectedTool === "line") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y, x_pix, y_pix);
+  }
+
+  if (selectedTool === 'rectangle') {
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    shapes.rectangles[shapes.rectangles.length - 1].setEndVertex(x, y, x_pix, y_pix);
   }
 
   if (selectedTool === "polygon") {
