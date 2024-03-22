@@ -7,6 +7,8 @@ class Shape {
     this.vertexPx = [];
     this.rotation = 0;
     this.rotationBase = 0;
+    this.width = 0;
+    this.height = 0;
     this.colorBuffer = [];
     this.anchor = [];
   }
@@ -19,12 +21,16 @@ class Shape {
     this.vertexBuffer[i * 2] = x;
     this.vertexPx[i * 2] = xPx;
     this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
   }
 
   setVertexY(i, y, yPx) {
     this.vertexBuffer[i * 2 + 1] = y;
     this.vertexPx[i * 2 + 1] = yPx;
     this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
   }
 
   setColor(i, rgba) {
@@ -74,6 +80,14 @@ class Shape {
     return this.colorBuffer.slice(i * 4, i * 4 + 4);
   }
 
+  getWidth() {
+    return this.width;
+  }
+
+  getHeight() {
+    return this.height;
+  }
+
   getAnchor() {
     return this.anchor;
   }
@@ -95,6 +109,14 @@ class Shape {
       this.vertexBufferBase[i] = this.vertexBuffer[i];
       this.vertexBufferBase[i + 1] = this.vertexBuffer[i + 1];
     }
+  }
+
+  updateWidth() {
+    throw new Error("Must be implemented");
+  }
+
+  updateHeight() {
+    throw new Error("Must be implemented");
   }
 
   updateAnchor() {
@@ -172,6 +194,21 @@ class Line extends Shape {
     this.vertexPx[3] = yPx;
     this.updateVertexBase();
     this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
+
+  updateWidth() {
+    this.width = distance2Vec(
+      this.getVertexXPx(0),
+      this.getVertexYPx(0),
+      this.getVertexXPx(1),
+      this.getVertexYPx(1)
+    );
+  }
+
+  updateHeight() {
+    this.height = 0;
   }
 
   print() {
@@ -182,6 +219,8 @@ class Line extends Shape {
     showLog(`vertexBuffer: ${this.vertexBuffer}`);
     showLog(`vertexPx: ${this.vertexPx}`);
     showLog(`vertexBufferBase: ${this.vertexBufferBase}`);
+    showLog(`Width: ${this.width}`);
+    showLog(`Height: ${this.height}`);
     showLog(`Rotation: ${this.rotation}`);
     showLog(`RotationBase: ${this.rotationBase}`);
     showLog(`Anchor: ${this.anchor}`);

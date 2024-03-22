@@ -130,7 +130,7 @@
     </div>
 
     <!-- Edit property -->
-    <div id="edit-properties" class="property-container">
+    <div id="edit-properties" class="property-container active">
       <!-- Edit color -->
       <div class="property">
         <label for="edit-color">Color</label>
@@ -143,14 +143,32 @@
       <!-- Shape -->
       <div class="property">
         <label>Shape</label>
-        <div class="label-value">
-          <label for="translate-x">X</label>
-          <input type="number" id="translate-x-input" class="prop-input" name="translate-x" value="0" placeholder="0">
-        </div>
+        <div class="property-rows">
+          <div class="property-columns">
+            <div class="label-value">
+              <label for="translate-x">X</label>
+              <input type="number" id="translate-x-input" class="prop-input" name="translate-x" value="0"
+                placeholder="0">
+            </div>
 
-        <div class="label-value">
-          <label for="translate">Y</label>
-          <input type="number" id="translate-y-input" class="prop-input" name="translate-y" value="0" placeholder="0">
+            <div class="label-value">
+              <label for="translate-y">Y</label>
+              <input type="number" id="translate-y-input" class="prop-input" name="translate-y" value="0"
+                placeholder="0">
+            </div>
+          </div>
+
+          <div class="property-columns">
+            <div class="label-value">
+              <label for="width">W</label>
+              <input type="number" id="width-input" class="prop-input" name="width" value="0" placeholder="0">
+            </div>
+
+            <div class="label-value">
+              <label for="height">H</label>
+              <input type="number" id="height-input" class="prop-input" name="height" value="0" placeholder="0">
+            </div>
+          </div>
         </div>
 
         <div class="label-value">
@@ -173,6 +191,7 @@
   <script src="./script/utils/log.js"></script>
   <script src="./script/utils/coverter.js"></script>
   <script src="./script/utils/viewport.js"></script>
+  <script src="./script/utils/geometry.js"></script>
 
   <!-- Shaders -->
   <script src="./script/shaders.js"></script>

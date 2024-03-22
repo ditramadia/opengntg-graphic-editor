@@ -29,4 +29,6 @@ const editColorValueSpan = document.querySelector("#edit-color-value");
 // Edit Shape
 const translateXInput = document.querySelector("#translate-x-input");
 const translateYInput = document.querySelector("#translate-y-input");
+const widthInput = document.querySelector("#width-input");
+const heightInput = document.querySelector("#height-input");
 const rotateInput = document.querySelector("#rotate-input");
