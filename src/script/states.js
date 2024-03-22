@@ -16,6 +16,7 @@ let canvasColor = [0.08, 0.08, 0.08, 1.0];
 let shapeColor = [0.9, 0.9, 0.9, 1.0];
 const shapes = {
   lines: [],
+  squares: [],
   rectangles: [],
   polygons: [],
 };
@@ -104,7 +105,19 @@ function updateSelectedObjects() {
       selectedShapes.push(obj);
     }
 
-    // Insert rectangle rectangle
+    // insert  square object
+    if (id.includes("s-") && id.includes("point")) {
+      const obj = shapes.squares[parseInt(id.split("-")[1]) - 1];
+      const pointId = parseInt(id.split("-")[3]) - 1;
+
+      selectedPoints.parentShape.push(obj);
+      selectedPoints.pointIndex.push(pointId);
+    } else if (id.includes("s-")) {
+      const obj = shapes.squares[parseInt(id.split("-")[1]) - 1];
+      selectedShapes.push(obj);
+    }
+
+    // Insert rectangle object
     if (id.includes("r-") && id.includes("point")) {
       const obj = shapes.rectangles[parseInt(id.split("-")[1]) - 1];
       const pointId = parseInt(id.split("-")[3]) - 1;
@@ -175,6 +188,60 @@ function insertShapeToHTML(type, obj) {
 
     // Handle shape checkbox event
     const shapeInput = document.querySelector(`#l-${obj.id}`);
+    shapeInput.addEventListener("change", () => {
+      if (shapeInput.checked) {
+        // Insert the shape into selectedShapes
+        // selectedShapes.push(shapeInput.id);
+
+        // Check all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = true;
+        });
+      } else {
+        // Remove the shape from selectedShapes
+        // selectedShapes.splice(selectedShapes.indexOf(shapeInput.id), 1);
+
+        // Uncheck all the point boxes
+        pointInputs.forEach((point) => {
+          point.checked = false;
+        });
+      }
+
+      updateSelectedObjects();
+    });
+
+    // Handle point checkbox event
+    pointInputs.forEach((point) => {
+      point.addEventListener("change", () => {
+        // Update selected objects
+        updateSelectedObjects();
+      });
+    });
+  }
+
+  if (type === "square") {
+    // Append new square to square rectangle list
+    const newSquare = document.createElement("div");
+    newSquare.innerHTML = `<div class="rectangle-item list">
+    <input type="checkbox" id="s-${obj.id}" name="s-${obj.id}" value="s-${obj.id}" />
+    <label for="s-${obj.id}">Square ${obj.id}</label>
+    </div>`;
+    squareObjects.querySelector(".items").appendChild(newSquare);
+
+    // Append new square points to square point list
+    for (let i = 1; i <= obj.numOfVertex; i++) {
+      newSquare.innerHTML += `<div class="point-item list">
+      <input type="checkbox" id="s-${obj.id}-point-${i}" name="s-${obj.id}-point" value="s-${obj.id}-point-${i}" />
+      <label for="s-${obj.id}-point-${i}">Point ${i}</label>
+    </div>`;
+    }
+
+    const pointInputs = document.querySelectorAll(
+      `input[name="s-${obj.id}-point"]`
+    );
+
+    // Handle shape checkbox event
+    const shapeInput = document.querySelector(`#s-${obj.id}`);
     shapeInput.addEventListener("change", () => {
       if (shapeInput.checked) {
         // Insert the shape into selectedShapes
@@ -448,6 +515,14 @@ canvas.addEventListener("mousedown", (e) => {
     insertShapeToHTML("line", newLine);
   }
 
+  if (selectedTool === 'square') {
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    const newId = shapes.squares.length + 1;
+    const newSquare = new Square(newId, x, y, x_pix, y_pix, shapeColor);
+    shapes.squares.push(newSquare);
+    insertShapeToHTML("square", newSquare);
+  }
+
   if (selectedTool === 'rectangle') {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     const newId = shapes.rectangles.length + 1;
@@ -512,6 +587,11 @@ canvas.addEventListener("mousemove", (e) => {
   if (selectedTool === "line") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y, x_pix, y_pix);
+  }
+
+  if (selectedTool === 'square') {
+    const { x, y, x_pix, y_pix } = getMousePos(e);
+    shapes.squares[shapes.squares.length - 1].setEndVertex(x, y, x_pix, y_pix);
   }
 
   if (selectedTool === 'rectangle') {
