@@ -202,14 +202,35 @@ class Line extends Shape {
     this.updateHeight();
   }
 
-  // TODO: Fix set width using pythagorean theorem
   setWidth(newWidth) {
-    const diff = newWidth - this.width;
-    const finalXPx = this.getVertexXPx(1) + diff;
-    const finalYPx = this.getVertexYPx(1) + diff;
-    this.setVertexX(1, normalizeX(finalXPx), finalXPx);
-    this.setVertexY(1, normalizeY(finalYPx), finalYPx);
+    const halfWidth = this.width / 2;
+    const halfDiff = (newWidth - this.width) / 2;
+
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    const initDiagonal = this.width / 2;
+    const finalDiagonal = halfWidth + halfDiff;
+
+    for (let i = 0; i < this.numOfVertex; i++) {
+      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
+      const initVertical = this.getVertexYPx(i) - anchorPx[1];
+
+      const ratioHorizontal = initHorizontal / initDiagonal;
+      const ratioVertical = initVertical / initDiagonal;
+
+ 
+      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
+      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
+      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
+    }
+
     this.updateWidth();
+    this.updateVertexBase();
   }
 
   updateWidth() {
