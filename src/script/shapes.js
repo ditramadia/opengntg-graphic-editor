@@ -303,14 +303,14 @@ class Square extends Shape {
     const directionX = xPx >= this.getVertexXPx(firstVertexIdx) ? 1 : -1;
     const directionY = yPx >= this.getVertexYPx(firstVertexIdx) ? 1 : -1;
 
-    this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), xPx);
-    this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), yPx);
+    this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
+    this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
 
-    this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), xPx);
+    this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
     this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(firstVertexIdx)), this.getVertexYPx(firstVertexIdx));
 
     this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(firstVertexIdx)), this.getVertexXPx(firstVertexIdx));
-    this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), yPx);
+    this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
 
     this.updateVertexBase();
     this.updateAnchor();
