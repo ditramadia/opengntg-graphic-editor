@@ -101,3 +101,26 @@
   flex-direction: column;
   gap: 16px;
 }
+
+#polygon-property {
+  display: none;
+}
+
+#polygon-property.active {
+  display: flex;
+}
+
+#edit-polygon-btn {
+  background-color: var(--secondary-color);
+  border: solid 1px var(--white);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+
+  cursor: pointer;
+}
+
+#edit-polygon-btn:active {
+  background-color: var(--tertiary-color);
+}

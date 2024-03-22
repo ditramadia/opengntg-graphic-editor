@@ -32,3 +32,7 @@ const translateYInput = document.querySelector("#translate-y-input");
 const widthInput = document.querySelector("#width-input");
 const heightInput = document.querySelector("#height-input");
 const rotateInput = document.querySelector("#rotate-input");
+
+// Edit polygon
+const polygonProperty = document.querySelector("#polygon-property");
+const editPolygonBtn = document.querySelector("#edit-polygon-btn");
