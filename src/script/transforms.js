@@ -56,7 +56,7 @@ let isMoving = false;
 let initialMousePos = [];
 
 // Event handler
-// User has started to move a vertex
+// User has started to move objects
 canvas.addEventListener("mousedown", (e) => {
   if (!isMoving && isEditing) {
     isMoving = true;
@@ -65,7 +65,7 @@ canvas.addEventListener("mousedown", (e) => {
   }
 });
 
-// User is moving a vertex
+// User is moving objects
 canvas.addEventListener("mousemove", (e) => {
   if (!isMoving || !isEditing) {
     return;
@@ -86,7 +86,7 @@ canvas.addEventListener("mousemove", (e) => {
   }
 });
 
-// User has stopped moving a vertex
+// User has stopped moving objects
 canvas.addEventListener("mouseup", () => {
   if (isMoving) {
     isMoving = false;
@@ -98,36 +98,11 @@ canvas.addEventListener("mouseup", () => {
 });
 
 // == Rotate ==============================================================
-rotateInput.addEventListener("input", () => {
-  const rotation = (rotateInput.value * Math.PI) / 180;
-  const rotatedObjectsId = [];
-  for (let i = 0; i < selectedPoints.length; i++) {
-    if (rotatedObjectsId.includes(selectedPoints[i].id)) {
-      continue;
-    }
+rotateInput.addEventListener("focusout", () => {
+  const rad = degreeToRadian(rotateInput.value);
 
-    const obj = selectedPoints[i];
-
-    for (let j = 0; j < obj.getNumOfVertex(); j++) {
-      const initialX = initialPointsPosition[j][0];
-      const initialY = initialPointsPosition[j][1];
-
-      showLog(obj.getAnchor());
-
-      obj.setVertexX(
-        j,
-        initialX * Math.cos(rotation) -
-          initialY * Math.sin(rotation) +
-          obj.getAnchor()[0]
-      );
-      obj.setVertexY(
-        j,
-        initialX * Math.sin(rotation) +
-          initialY * Math.cos(rotation) +
-          obj.getAnchor()[1]
-      );
-    }
-
-    rotatedObjectsId.push(obj.id);
+  for (let i = 0; i < selectedShapes.length; i++) {
+    const obj = selectedShapes[i];
+    obj.rotate(rad);
   }
 });

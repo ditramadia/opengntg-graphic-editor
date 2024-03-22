@@ -18,11 +18,13 @@ class Shape {
   setVertexX(i, x, xPx) {
     this.vertexBuffer[i * 2] = x;
     this.vertexPx[i * 2] = xPx;
+    this.updateAnchor();
   }
 
   setVertexY(i, y, yPx) {
     this.vertexBuffer[i * 2 + 1] = y;
     this.vertexPx[i * 2 + 1] = yPx;
+    this.updateAnchor();
   }
 
   setColor(i, rgba) {
@@ -79,11 +81,13 @@ class Shape {
   translateX(i, diffX) {
     const finalX = this.vertexBufferBase[i * 2] + diffX;
     this.setVertexX(i, finalX, denormalizeX(finalX));
+    this.updateAnchor();
   }
 
   translateY(i, diffY) {
     const finalY = this.vertexBufferBase[i * 2 + 1] + diffY;
     this.setVertexY(i, finalY, denormalizeY(finalY));
+    this.updateAnchor();
   }
 
   updateVertexBase() {
@@ -93,7 +97,7 @@ class Shape {
     }
   }
 
-  updateCentroid() {
+  updateAnchor() {
     let tempX = 0;
     let tempY = 0;
     for (let i = 0; i < this.vertexBuffer.length; i += 2) {
@@ -102,6 +106,29 @@ class Shape {
     }
     this.anchor[0] = tempX / this.numOfVertex;
     this.anchor[1] = tempY / this.numOfVertex;
+  }
+
+  rotate(rad) {
+    const cos = Math.cos(rad - degreeToRadian(this.rotation));
+    const sin = Math.sin(rad - degreeToRadian(this.rotation));
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    for (let i = 0; i < this.getNumOfVertex(); i++) {
+      const xDist = this.getVertexXPx(i) - anchorPx[0];
+      const yDist = this.getVertexYPx(i) - anchorPx[1];
+
+      const finalX = xDist * cos - yDist * sin + anchorPx[0];
+      const finalY = xDist * sin + yDist * cos + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalX), finalX);
+      this.setVertexY(i, normalizeY(finalY), finalY);
+    }
+
+    this.rotation = radianToDegree(rad);
+    this.updateVertexBase();
   }
 
   render() {
@@ -140,11 +167,11 @@ class Line extends Shape {
 
   setEndVertex(x, y, xPx, yPx) {
     this.vertexBuffer[2] = x;
-    this.vertexBufferBase[2] = x;
-    this.vertexPx[2] = xPx;
     this.vertexBuffer[3] = y;
-    this.vertexBufferBase[3] = y;
+    this.vertexPx[2] = xPx;
     this.vertexPx[3] = yPx;
+    this.updateVertexBase();
+    this.updateAnchor();
   }
 
   print() {

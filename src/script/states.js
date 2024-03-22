@@ -282,9 +282,5 @@ canvas.addEventListener("mouseup", (e) => {
     return;
   }
 
-  if (selectedTool === "line") {
-    shapes.lines[shapes.lines.length - 1].updateCentroid();
-  }
-
   isDrawing = false;
 });

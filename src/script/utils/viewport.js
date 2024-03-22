@@ -15,30 +15,30 @@ window.requestAnimFrame = (() => {
 
 // Normalize coordinate unit from pixel, to canvas unit
 function normalizeX(x) {
-  canvasXCenter = canvas.width / 2;
+  const canvasXCenter = canvas.width / 2;
   return (x - canvasXCenter) / canvasXCenter;
 }
 
 function normalizeY(y) {
-  canvasYCenter = canvas.height / 2;
+  const canvasYCenter = canvas.height / 2;
   return (canvasYCenter - y) / canvasYCenter;
 }
 
 function normalizeCoor(x, y) {
-  n_x = normalizeX(x);
-  n_y = normalizeY(y);
+  const n_x = normalizeX(x);
+  const n_y = normalizeY(y);
 
   return { n_x, n_y };
 }
 
 // Denormalize coordinate unit from canvas unit, to pixel
 function denormalizeX(x) {
-  canvasXCenter = canvas.width / 2;
+  const canvasXCenter = canvas.width / 2;
   return x * canvasXCenter + canvasXCenter;
 }
 
 function denormalizeY(y) {
-  canvasYCenter = canvas.height / 2;
+  const canvasYCenter = canvas.height / 2;
   return canvasYCenter - y * canvasYCenter;
 }
 

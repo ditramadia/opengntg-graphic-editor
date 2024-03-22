@@ -20,3 +20,11 @@ function rgbaToHex(rgba) {
 
   return `#${r}${g}${b}`;
 }
+
+function degreeToRadian(degree) {
+  return ((degree % 360) * Math.PI) / 180;
+}
+
+function radianToDegree(radian) {
+  return ((radian * 180) / Math.PI) % 360;
+}
