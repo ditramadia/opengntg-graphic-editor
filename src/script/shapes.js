@@ -33,6 +33,10 @@ class Shape {
     this.updateHeight();
   }
 
+  setWidth() {
+    throw new Error("Must be implemented");
+  }
+
   setColor(i, rgba) {
     this.colorBuffer[i * 4] = rgba[0];
     this.colorBuffer[i * 4 + 1] = rgba[1];
@@ -196,6 +200,16 @@ class Line extends Shape {
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+  }
+
+  // TODO: Fix set width using pythagorean theorem
+  setWidth(newWidth) {
+    const diff = newWidth - this.width;
+    const finalXPx = this.getVertexXPx(1) + diff;
+    const finalYPx = this.getVertexYPx(1) + diff;
+    this.setVertexX(1, normalizeX(finalXPx), finalXPx);
+    this.setVertexY(1, normalizeY(finalYPx), finalYPx);
+    this.updateWidth();
   }
 
   updateWidth() {

@@ -10,6 +10,17 @@ editColorInput.addEventListener("input", () => {
   }
 });
 
+// == Width ===============================================================
+widthInput.addEventListener("focusout", () => {
+  const newWidth = widthInput.value;
+
+  // Change every selected shape
+  for (let i = 0; i < selectedShapes.length; i++) {
+    vertexObj = selectedShapes[i];
+    vertexObj.setWidth(newWidth);
+  }
+});
+
 // == Translate X =========================================================
 translateXInput.addEventListener("focusout", () => {
   const valuePx = translateXInput.value;
