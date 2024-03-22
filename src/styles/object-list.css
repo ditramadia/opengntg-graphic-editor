@@ -28,27 +28,10 @@
   font-size: x-small;
 }
 
-.object-list .object-item {
-  display: none;
-}
-
-.object-list.open .object-item {
-  display: block;
-}
-
 .object-list .object-label {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.object-list .object-label i {
-  display: inline;
-  font-size: x-small;
-}
-
-.object-list .object-label i.hide {
-  display: none;
 }
 
 .object-list .list {
@@ -63,5 +46,17 @@
 }
 
 .object-list .object-item {
-  padding-left: 50px;
+  padding-left: 40px;
+}
+
+.object-list .object-item.selected {
+  border: solid 1px var(--accent-color);
+}
+
+.object-list .point-item {
+  padding-left: 60px;
+}
+
+.object-list .point-item.selected {
+  border: solid 1px var(--accent-color);
 }

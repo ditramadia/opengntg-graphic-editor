@@ -14,17 +14,35 @@ window.requestAnimFrame = (() => {
 })();
 
 // Normalize coordinate unit from pixel, to canvas unit
-function normalizeCoor(x, y) {
-  canvasXCenter = canvas.width / 2;
-  canvasYCenter = canvas.height / 2;
+function normalizeX(x) {
+  const canvasXCenter = canvas.width / 2;
+  return (x - canvasXCenter) / canvasXCenter;
+}
 
-  n_x = (x - canvasXCenter) / canvasXCenter;
-  n_y = (canvasYCenter - y) / canvasYCenter;
+function normalizeY(y) {
+  const canvasYCenter = canvas.height / 2;
+  return (canvasYCenter - y) / canvasYCenter;
+}
+
+function normalizeCoor(x, y) {
+  const n_x = normalizeX(x);
+  const n_y = normalizeY(y);
 
   return { n_x, n_y };
 }
 
-// Get current mouse position relevant to the canvas
+// Denormalize coordinate unit from canvas unit, to pixel
+function denormalizeX(x) {
+  const canvasXCenter = canvas.width / 2;
+  return x * canvasXCenter + canvasXCenter;
+}
+
+function denormalizeY(y) {
+  const canvasYCenter = canvas.height / 2;
+  return canvasYCenter - y * canvasYCenter;
+}
+
+// Get current mouse position
 function getMousePos(e) {
   const pos = canvas.getBoundingClientRect();
 
@@ -33,5 +51,5 @@ function getMousePos(e) {
 
   const { n_x: x, n_y: y } = normalizeCoor(x_pix, y_pix);
 
-  return { x, y };
+  return { x, y, x_pix, y_pix };
 }
