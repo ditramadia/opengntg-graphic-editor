@@ -671,9 +671,17 @@ exportShapeBtn.addEventListener("click", () => {
 // Import shapes from JSON
 function importShapes(json) {
   const shapesJSON = JSON.parse(json);
+  const shapeTypeMap = {
+    "line": Line,
+    "square": Square,
+    "rectangle": Rectangle,
+    "polygon": Polygon
+  };
+
   shapesJSON.forEach((shape) => {
-    if (shape.type === "line") {
-      const newLine = new Line(
+    const ShapeType = shapeTypeMap[shape.type];
+    if (ShapeType) {
+      const newShape = new ShapeType(
         shape.id,
         shape.vertexBufferBase[0],
         shape.vertexBufferBase[1],
@@ -681,24 +689,18 @@ function importShapes(json) {
         shape.vertexPx[1],
         shape.colorBuffer
       );
-      newLine.numOfVertex = shape.numOfVertex;
-      newLine.vertexBuffer = shape.vertexBuffer;
-      newLine.vertexBufferBase = shape.vertexBufferBase;
-      newLine.vertexPx = shape.vertexPx;
-      newLine.rotation = shape.rotation;
-      newLine.rotationBase = shape.rotationBase;
-      newLine.width = shape.width;
-      newLine.height = shape.height;
-      newLine.colorBuffer = shape.colorBuffer;
-      newLine.anchor = shape.anchor;
-      insertShapeToHTML("line", newLine);
-      shapes.lines.push(newLine);
-    } else if (shape.type === "square") {
-      // Handle square import
-    } else if (shape.type === "rectangle") {
-      // Handle rectangle import
-    } else if (shape.type === "polygon") {
-      // Handle polygon import
+      newShape.numOfVertex = shape.numOfVertex;
+      newShape.vertexBuffer = shape.vertexBuffer;
+      newShape.vertexBufferBase = shape.vertexBufferBase;
+      newShape.vertexPx = shape.vertexPx;
+      newShape.rotation = shape.rotation;
+      newShape.rotationBase = shape.rotationBase;
+      newShape.width = shape.width;
+      newShape.height = shape.height;
+      newShape.colorBuffer = shape.colorBuffer;
+      newShape.anchor = shape.anchor;
+      insertShapeToHTML(shape.type, newShape);
+      shapes[shape.type + 's'].push(newShape);
     }
   });
 }
