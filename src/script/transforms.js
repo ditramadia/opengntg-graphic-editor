@@ -72,6 +72,17 @@ translateYInput.addEventListener("focusout", () => {
   }
 });
 
+// == Rotate ==============================================================
+rotateInput.addEventListener("focusout", () => {
+  const rad = degreeToRadian(rotateInput.value);
+
+  for (let i = 0; i < selectedShapes.length; i++) {
+    const obj = selectedShapes[i];
+    obj.rotate(rad);
+  }
+});
+
+
 // == Move ================================================================
 // Variables
 let isMoving = false;
@@ -116,15 +127,5 @@ canvas.addEventListener("mouseup", () => {
 
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
     selectedPoints.parentShape[i].updateVertexBase();
-  }
-});
-
-// == Rotate ==============================================================
-rotateInput.addEventListener("focusout", () => {
-  const rad = degreeToRadian(rotateInput.value);
-
-  for (let i = 0; i < selectedShapes.length; i++) {
-    const obj = selectedShapes[i];
-    obj.rotate(rad);
   }
 });

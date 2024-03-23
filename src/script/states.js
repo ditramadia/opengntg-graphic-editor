@@ -37,6 +37,20 @@ function clear() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 }
 
+function clearShapes() {
+  // Clear shape object list
+  shapes.lines = [];
+  shapes.squares = [];
+  shapes.rectangles = [];
+  shapes.polygons = [];
+
+  // Clear HTML object list
+  lineObjects.querySelector(".items").innerHTML = "";
+  squareObjects.querySelector(".items").innerHTML = "";
+  rectangleObjects.querySelector(".items").innerHTML = "";
+  polygonObjects.querySelector(".items").innerHTML = "";
+}
+
 // Initialize WebGL
 try {
   gl = canvas.getContext("webgl2");
@@ -624,3 +638,67 @@ canvas.addEventListener("mouseup", (e) => {
 
   isDrawing = false;
 });
+
+// == Import/Export =======================================================
+
+// Export shapes to JSON
+exportShapeBtn.addEventListener("click", () => {
+  const exportObj = selectedShapes.length > 0 ? selectedShapes : allShapesVertex;
+  exportObj.forEach((obj) => {
+    if (obj instanceof Line) {
+      obj.type = "line";
+    }
+    if (obj instanceof Square) {
+      obj.type = "square";
+    }
+    if (obj instanceof Rectangle) {
+      obj.type = "rectangle";
+    }
+    if (obj instanceof Polygon) {
+      obj.type = "polygon";
+    }
+  });
+  const exportStr = JSON.stringify(exportObj, null, 2);
+  const blob = new Blob([exportStr], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `shapes-${Date.now()}.json`
+  a.click();
+});
+
+// Import shapes from JSON
+function importShapes(json) {
+  const shapesJSON = JSON.parse(json);
+  shapesJSON.forEach((shape) => {
+    if (shape.type === "line") {
+      const newLine = new Line(
+        shape.id,
+        shape.vertexBufferBase[0],
+        shape.vertexBufferBase[1],
+        shape.vertexPx[0],
+        shape.vertexPx[1],
+        shape.colorBuffer
+      );
+      newLine.numOfVertex = shape.numOfVertex;
+      newLine.vertexBuffer = shape.vertexBuffer;
+      newLine.vertexBufferBase = shape.vertexBufferBase;
+      newLine.vertexPx = shape.vertexPx;
+      newLine.rotation = shape.rotation;
+      newLine.rotationBase = shape.rotationBase;
+      newLine.width = shape.width;
+      newLine.height = shape.height;
+      newLine.colorBuffer = shape.colorBuffer;
+      newLine.anchor = shape.anchor;
+      insertShapeToHTML("line", newLine);
+      shapes.lines.push(newLine);
+    } else if (shape.type === "square") {
+      // Handle square import
+    } else if (shape.type === "rectangle") {
+      // Handle rectangle import
+    } else if (shape.type === "polygon") {
+      // Handle polygon import
+    }
+  });
+}

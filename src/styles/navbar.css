@@ -56,3 +56,32 @@ nav .nav-icon {
   width: 28px;
   height: 28px;
 }
+
+.dropdown-menu {
+  display: none;
+}
+
+.dropdown.open .dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  height: fit-content;
+  width: 200px;
+  top: 60px;
+  left: 5px;
+  z-index: 50;
+
+  background-color: var(--primary-color);
+  border: solid 0.1px var(--secondary-color);
+  box-shadow: 1px 1px 10px rgba(0, 0, 0, 1);
+}
+
+.dropdown.open .dropdown-menu li {
+  width: 100%;
+  justify-content: left;
+  padding: 5px 10px;
+  font-size: 12px;
+
+  color: var(--white);
+}
+

@@ -36,3 +36,6 @@ const rotateInput = document.querySelector("#rotate-input");
 // Edit polygon
 const polygonProperty = document.querySelector("#polygon-property");
 const editPolygonBtn = document.querySelector("#edit-polygon-btn");
+
+// Export shape
+const exportShapeBtn = document.querySelector("#export-btn");

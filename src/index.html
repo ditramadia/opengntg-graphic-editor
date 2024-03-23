@@ -22,10 +22,14 @@
   <!-- Navbar -->
   <nav>
     <ul>
-      <!-- TODO: Implement dropdown menu -->
-      <li id="logo">
+      <li id="logo" class="dropdown">
         <span>OpenGNTG</span>
         <i class="fa-solid fa-chevron-down"></i>
+        <ul class="dropdown-menu">
+          <li>New File</li>
+          <li>Import Shape</li>
+          <li>Help</li>
+        </ul>
       </li>
       <li id="cursor" class="tool-btn active">
         <img src="../public/cursor-ic.svg" class="nav-icon">
@@ -184,6 +188,12 @@
         <label for="edit-polygon-btn">Polygon</label>
         <button id="edit-polygon-btn">Edit shape</button>
       </div>
+
+      <!-- Export -->
+      <div id="export-property" class="property">
+        <label for="export-btn">Export</label>
+        <button id="export-btn">Export shape</button>
+      </div>
     </div>
 
   </div>
@@ -219,6 +229,9 @@
 
   <!-- Main app -->
   <script src="./script/index.js"></script>
+
+  <!-- Dropdown menu -->
+  <script src="./script/dropdown.js"></script>
 
 </body>
 

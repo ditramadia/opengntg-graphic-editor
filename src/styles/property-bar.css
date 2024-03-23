@@ -124,3 +124,33 @@
 #edit-polygon-btn:active {
   background-color: var(--tertiary-color);
 }
+
+#export-btn {
+  background-color: var(--secondary-color);
+  border: solid 1px var(--white);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+
+  cursor: pointer;
+}
+
+#export-btn:active {
+  background-color: var(--tertiary-color);
+}
+
+#import-btn {
+  background-color: var(--secondary-color);
+  border: solid 1px var(--white);
+  padding: 10px;
+  border-radius: 8px;
+  color: var(--white);
+  font-family: "Poppins", sans-serif;
+
+  cursor: pointer;
+}
+
+#import-btn:active {
+  background-color: var(--tertiary-color);
+}

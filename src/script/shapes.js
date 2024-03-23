@@ -316,7 +316,6 @@ class Square extends Shape {
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
-    showLog(`Square: ${this.width}, ${this.height}`);
 }
 
   setWidth(newWidth) {
