@@ -246,6 +246,17 @@ class Line extends Shape {
     this.height = 0;
   }
 
+  setEndVertex(x, y, xPx, yPx) {
+    this.vertexBuffer[2] = x;
+    this.vertexBuffer[3] = y;
+    this.vertexPx[2] = xPx;
+    this.vertexPx[3] = yPx;
+    this.updateVertexBase();
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
+
   print() {
     showLog("\nLine");
     showLog(`id: ${this.id}`);
