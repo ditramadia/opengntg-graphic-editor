@@ -216,36 +216,6 @@ class Line extends Shape {
     }
   }
 
-  setWidth(newWidth) {
-    const halfWidth = this.width / 2;
-    const halfDiff = (newWidth - this.width) / 2;
-
-    const anchorPx = [
-      denormalizeX(this.anchor[0]),
-      denormalizeY(this.anchor[1]),
-    ];
-
-    const initDiagonal = this.width / 2;
-    const finalDiagonal = halfWidth + halfDiff;
-
-    for (let i = 0; i < this.numOfVertex; i++) {
-      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
-      const initVertical = this.getVertexYPx(i) - anchorPx[1];
-
-      const ratioHorizontal = initHorizontal / initDiagonal;
-      const ratioVertical = initVertical / initDiagonal;
-
-      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
-      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
-
-      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
-      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
-    }
-
-    this.updateWidth();
-    this.updateVertexBase();
-  }
-
   updateWidth() {
     this.width = distance2Vec(
       this.getVertexXPx(0),
@@ -340,35 +310,35 @@ class Square extends Shape {
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
-}
+  }
 
   setWidth(newWidth) {
+    const halfWidth = this.width / 2;
     const halfDiff = (newWidth - this.width) / 2;
 
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    const initDiagonal = this.width / 2;
+    const finalDiagonal = halfWidth + halfDiff;
+
     for (let i = 0; i < this.numOfVertex; i++) {
-      let finalX, finalY;
+      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
+      const initVertical = this.getVertexYPx(i) - anchorPx[1];
 
-      if (i % 2 === 0) {
-          finalX = this.getVertexXPx(i) - halfDiff;
-      } else {
-          finalX = this.getVertexXPx(i) + halfDiff;
-      }
+      const ratioHorizontal = initHorizontal / initDiagonal;
+      const ratioVertical = initVertical / initDiagonal;
 
-      if (i < 2) {
-          finalY = this.getVertexYPx(i) - halfDiff;
-      } else {
-          finalY = this.getVertexYPx(i) + halfDiff;
-      }
-      
-      finalX = Math.round(finalX * 100) / 100;
-      finalY = Math.round(finalY * 100) / 100;
-      
-      this.setVertexX(i, normalizeX(finalX), finalX);
-      this.setVertexY(i, normalizeY(finalY), finalY);
+      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
+      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
+      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
     }
 
     this.updateWidth();
-    this.updateHeight();
     this.updateVertexBase();
   }
 
@@ -445,16 +415,29 @@ class Rectangle extends Shape {
   }
 
   setWidth(newWidth) {
+    const halfWidth = this.width / 2;
     const halfDiff = (newWidth - this.width) / 2;
 
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    const initDiagonal = this.width / 2;
+    const finalDiagonal = halfWidth + halfDiff;
+
     for (let i = 0; i < this.numOfVertex; i++) {
-      if (i % 2 === 0) {
-        const finalX = this.getVertexXPx(i) - halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-      } else {
-        const finalX = this.getVertexXPx(i) + halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-      }
+      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
+      const initVertical = this.getVertexYPx(i) - anchorPx[1];
+
+      const ratioHorizontal = initHorizontal / initDiagonal;
+      const ratioVertical = initVertical / initDiagonal;
+
+      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
+      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
+      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
     }
 
     this.updateWidth();
@@ -462,16 +445,29 @@ class Rectangle extends Shape {
   }
 
   setHeight(newHeight) {
+    const halfHeight = this.height / 2;
     const halfDiff = (newHeight - this.height) / 2;
 
+    const anchorPx = [
+      denormalizeX(this.anchor[0]),
+      denormalizeY(this.anchor[1]),
+    ];
+
+    const initDiagonal = this.height / 2;
+    const finalDiagonal = halfHeight + halfDiff;
+
     for (let i = 0; i < this.numOfVertex; i++) {
-      if (i < 2) {
-        const finalY = this.getVertexYPx(i) - halfDiff;
-        this.setVertexY(i, normalizeY(finalY), finalY);
-      } else {
-        const finalY = this.getVertexYPx(i) + halfDiff;
-        this.setVertexY(i, normalizeY(finalY), finalY);
-      }
+      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
+      const initVertical = this.getVertexYPx(i) - anchorPx[1];
+
+      const ratioHorizontal = initHorizontal / initDiagonal;
+      const ratioVertical = initVertical / initDiagonal;
+
+      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
+      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
+
+      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
+      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
     }
 
     this.updateHeight();
