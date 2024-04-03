@@ -478,8 +478,8 @@ function updatePropertyValues() {
   translateYInput.value = Math.floor(
     firstSelected.getVertexYPx(firstSelectedIndex)
   );
-  widthInput.value = Math.floor(firstSelected.getWidth());
-  heightInput.value = Math.floor(firstSelected.getHeight());
+  widthInput.value = Math.round(firstSelected.getWidth());
+  heightInput.value = Math.round(firstSelected.getHeight());
   rotateInput.value = firstSelected.getRotation();
 }
 

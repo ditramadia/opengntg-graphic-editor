@@ -333,27 +333,25 @@ class Square extends Shape {
     const halfDiff = (newWidth - this.width) / 2;
 
     for (let i = 0; i < this.numOfVertex; i++) {
-      if (i == 0) {
-        const finalX = this.getVertexXPx(i) - halfDiff;
-        const finalY = this.getVertexYPx(i) - halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-        this.setVertexY(i, normalizeY(finalY), finalY);
-      } else if (i == 1) {
-        const finalX = this.getVertexXPx(i) + halfDiff;
-        const finalY = this.getVertexYPx(i) - halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-        this.setVertexY(i, normalizeY(finalY), finalY);
-      } else if (i == 2) {
-        const finalX = this.getVertexXPx(i) - halfDiff;
-        const finalY = this.getVertexYPx(i) + halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-        this.setVertexY(i, normalizeY(finalY), finalY);
+      let finalX, finalY;
+
+      if (i % 2 === 0) {
+          finalX = this.getVertexXPx(i) - halfDiff;
       } else {
-        const finalX = this.getVertexXPx(i) + halfDiff;
-        const finalY = this.getVertexYPx(i) + halfDiff;
-        this.setVertexX(i, normalizeX(finalX), finalX);
-        this.setVertexY(i, normalizeY(finalY), finalY);
+          finalX = this.getVertexXPx(i) + halfDiff;
       }
+
+      if (i < 2) {
+          finalY = this.getVertexYPx(i) - halfDiff;
+      } else {
+          finalY = this.getVertexYPx(i) + halfDiff;
+      }
+      
+      finalX = Math.round(finalX * 100) / 100;
+      finalY = Math.round(finalY * 100) / 100;
+      
+      this.setVertexX(i, normalizeX(finalX), finalX);
+      this.setVertexY(i, normalizeY(finalY), finalY);
     }
 
     this.updateWidth();
@@ -382,7 +380,6 @@ class Square extends Shape {
       this.getVertexYPx(2)
     );
   }
-
 }
 
 class Rectangle extends Shape {

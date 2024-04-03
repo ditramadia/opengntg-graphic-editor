@@ -11,74 +11,111 @@ editColorInput.addEventListener("input", () => {
 });
 
 // == Width ===============================================================
-widthInput.addEventListener("focusout", () => {
+function setShapesWidth() {
   const newWidth = widthInput.value;
 
-  // Change every selected shape
+  // Change width for every selected shape
   for (let i = 0; i < selectedShapes.length; i++) {
-    vertexObj = selectedShapes[i];
-    vertexObj.setWidth(newWidth);
+      vertexObj = selectedShapes[i];
+      vertexObj.setWidth(newWidth);
+  }
+}
+
+widthInput.addEventListener("focusout", setShapesWidth);
+widthInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+      event.preventDefault();
+      widthInput.blur();
   }
 });
 
 // == Height ==============================================================
-heightInput.addEventListener("focusout", () => {
+function setShapesHeight() {
   const newHeight = heightInput.value;
 
-  // Change every selected shape
+  // Change height for every selected shape
   for (let i = 0; i < selectedShapes.length; i++) {
-    vertexObj = selectedShapes[i];
-    vertexObj.setHeight(newHeight);
+      vertexObj = selectedShapes[i];
+      vertexObj.setHeight(newHeight);
+  }
+}
+
+
+heightInput.addEventListener("focusout", setShapesHeight);
+heightInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+      event.preventDefault();
+      heightInput.blur();
   }
 });
 
 // == Translate X =========================================================
-translateXInput.addEventListener("focusout", () => {
+function translateShapesX() {
   const valuePx = translateXInput.value;
   const valueX = normalizeX(valuePx);
 
-  const initialX = allShapesVertex[0].getVertexXBase(
-    selectedPoints.pointIndex[0] || 0
-  );
+  const initialX = allShapesVertex[0].getVertexXBase(selectedPoints.pointIndex[0] || 0);
 
   const diffX = valueX - initialX;
 
   // Translate every selected vertices
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-    vertexObj = selectedPoints.parentShape[i];
-    vertexIdx = selectedPoints.pointIndex[i];
+      vertexObj = selectedPoints.parentShape[i];
+      vertexIdx = selectedPoints.pointIndex[i];
 
-    vertexObj.translateX(vertexIdx, diffX);
+      vertexObj.translateX(vertexIdx, diffX);
+  }
+}
+
+translateXInput.addEventListener("focusout", translateShapesX);
+translateXInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+      event.preventDefault();
+      translateXInput.blur();
   }
 });
 
 // == Translate Y =========================================================
-translateYInput.addEventListener("focusout", () => {
-  const valuePy = translateYInput.value;
-  const valueY = normalizeY(valuePy);
+function translateShapesY() {
+  const valuePx = translateYInput.value;
+  const valueY = normalizeY(valuePx);
 
-  const initialY = allShapesVertex[0].getVertexYBase(
-    selectedPoints.pointIndex[0] || 0
-  );
+  const initialY = allShapesVertex[0].getVertexYBase(selectedPoints.pointIndex[0] || 0);
 
   const diffY = valueY - initialY;
 
   // Translate every selected vertices
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-    vertexObj = selectedPoints.parentShape[i];
-    vertexIdx = selectedPoints.pointIndex[i];
+      vertexObj = selectedPoints.parentShape[i];
+      vertexIdx = selectedPoints.pointIndex[i];
 
-    vertexObj.translateY(vertexIdx, diffY);
+      vertexObj.translateY(vertexIdx, diffY);
+  }
+}
+
+translateYInput.addEventListener("focusout", translateShapesY);
+translateYInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+      event.preventDefault();
+      translateYInput.blur();
   }
 });
 
 // == Rotate ==============================================================
-rotateInput.addEventListener("focusout", () => {
+function rotateShapes() {
   const rad = degreeToRadian(rotateInput.value);
 
   for (let i = 0; i < selectedShapes.length; i++) {
     const obj = selectedShapes[i];
     obj.rotate(rad);
+  }
+}
+
+rotateInput.addEventListener("focusout", rotateShapes);
+rotateInput.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    rotateInput.blur();
   }
 });
 
