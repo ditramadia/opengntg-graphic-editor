@@ -49,6 +49,9 @@ function clearShapes() {
   squareObjects.querySelector(".items").innerHTML = "";
   rectangleObjects.querySelector(".items").innerHTML = "";
   polygonObjects.querySelector(".items").innerHTML = "";
+
+  // Clear property bar
+  updateSelectedObjects();
 }
 
 // Initialize WebGL
@@ -391,6 +394,60 @@ function insertShapeToHTML(type, obj) {
   }
 }
 
+function removeShapeFromHTML(type, obj) {
+  if (type === "line") {
+    const shapeInput = document.querySelector(`#l-${obj.id}`);
+    shapeInput.parentElement.remove();
+
+    // Remove child point checkboxes
+    const pointInputs = document.querySelectorAll(
+      `input[name^="l-${obj.id}-point"]`
+    );
+    pointInputs.forEach((point) => {
+      point.parentElement.remove();
+    });
+  }
+
+  if (type === "square") {
+    const shapeInput = document.querySelector(`#s-${obj.id}`);
+    shapeInput.parentElement.remove();
+
+    // Remove child point checkboxes
+    const pointInputs = document.querySelectorAll(
+      `input[name^="s-${obj.id}-point"]`
+    );
+    pointInputs.forEach((point) => {
+      point.parentElement.remove();
+    });
+  }
+
+  if (type === "rectangle") {
+    const shapeInput = document.querySelector(`#r-${obj.id}`);
+    shapeInput.parentElement.remove();
+
+    // Remove child point checkboxes
+    const pointInputs = document.querySelectorAll(
+      `input[name^="r-${obj.id}-point"]`
+    );
+    pointInputs.forEach((point) => {
+      point.parentElement.remove();
+    });
+  }
+
+  if (type === "polygon") {
+    const shapeInput = document.querySelector(`#p-${obj.id}`);
+    shapeInput.parentElement.remove();
+
+    // Remove child point checkboxes
+    const pointInputs = document.querySelectorAll(
+      `input[name^="p-${obj.id}-point"]`
+    );
+    pointInputs.forEach((point) => {
+      point.parentElement.remove();
+    });
+  }
+}
+
 function insertPointToHTML(type, obj) {
   if (type === "polygon") {
     const parentPolygonDiv = document.querySelector(`#div-p-${obj.id}`);
@@ -704,3 +761,36 @@ function importShapes(json) {
     }
   });
 }
+
+// == Delete ==============================================================
+
+// Delete selected shapes
+deleteShapeBtn.addEventListener("click", () => {
+  if (!isEditing) {
+    return;
+  }
+
+  // Delete selected shapes
+  for (let i = 0; i < selectedShapes.length; i++) {
+    vertexObj = selectedShapes[i];
+    vertexObj.delete();
+  }
+
+  // Delete from HTML
+  selectedShapes.forEach((shape) => {
+    let type;
+    if (shape instanceof Line) {
+        type = "line";
+    } else if (shape instanceof Square) {
+        type = "square";
+    } else if (shape instanceof Rectangle) {
+        type = "rectangle";
+    } else if (shape instanceof Polygon) {
+        type = "polygon";
+    }
+    removeShapeFromHTML(type, shape);
+  });
+
+  // Update selected objects
+  updateSelectedObjects();
+});

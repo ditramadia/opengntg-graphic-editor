@@ -39,3 +39,6 @@ const editPolygonBtn = document.querySelector("#edit-polygon-btn");
 
 // Export shape
 const exportShapeBtn = document.querySelector("#export-btn");
+
+// Delee shape
+const deleteShapeBtn = document.querySelector("#delete-btn");

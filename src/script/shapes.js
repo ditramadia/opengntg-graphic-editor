@@ -173,6 +173,19 @@ class Shape {
     throw new Error("Must be implemented");
   }
 
+  delete() {
+    this.vertexBuffer = [];
+    this.vertexBufferBase = [];
+    this.vertexPx = [];
+    this.colorBuffer = [];
+    this.numOfVertex = 0;
+    this.anchor = [];
+    this.width = 0;
+    this.height = 0;
+    this.rotation = 0;
+    this.rotationBase = 0;
+  }
+
   print() {
     throw new Error("Must be implemented");
   }
