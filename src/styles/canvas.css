@@ -1,5 +1,5 @@
 canvas {
-  width: 5000px;
-  height: 5000px;
+  width: 100vw;
+  height: 100vh;
   background-color: var(--red);
 }
