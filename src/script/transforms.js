@@ -146,11 +146,21 @@ canvas.addEventListener("mousemove", (e) => {
   const diffY = y - initialMousePos[1];
 
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-    vertexObj = selectedPoints.parentShape[i];
-    vertexIdx = selectedPoints.pointIndex[i];
+    console.log(selectedPoints.parentShape)
+    if (selectedPoints.parentShape.length === 1 && !(selectedPoints.parentShape[0] instanceof Line)) {
+      const { x, y, x_pix, y_pix } = getMousePos(e);
 
-    vertexObj.translateX(vertexIdx, diffX);
-    vertexObj.translateY(vertexIdx, diffY);
+      vertexObj = selectedPoints.parentShape[0];
+      vertexIdx = selectedPoints.pointIndex[0];
+
+      vertexObj.pointDrag(vertexIdx, x_pix, y_pix, x, y);
+    } else {
+      vertexObj = selectedPoints.parentShape[i];
+      vertexIdx = selectedPoints.pointIndex[i];
+
+      vertexObj.translateX(vertexIdx, diffX);
+      vertexObj.translateY(vertexIdx, diffY);
+    }
 
     updatePropertyValues();
   }
