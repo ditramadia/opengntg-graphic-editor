@@ -1,7 +1,7 @@
 <!-- LOGO -->
 <br />
 <div align="center">
-  <img src="public/algo.png" alt="Logo" width="80" height="80">
+  <img src="public/logo-img.png" alt="Logo" height="80">
 
   <h3 align="center">OpenGNTG</h3>
 
