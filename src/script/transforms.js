@@ -19,6 +19,8 @@ function setShapesWidth() {
       vertexObj = selectedShapes[i];
       vertexObj.setWidth(newWidth);
   }
+
+  updatePropertyValues();
 }
 
 widthInput.addEventListener("focusout", setShapesWidth);
@@ -38,6 +40,8 @@ function setShapesHeight() {
       vertexObj = selectedShapes[i];
       vertexObj.setHeight(newHeight);
   }
+
+  updatePropertyValues();
 }
 
 
@@ -65,6 +69,8 @@ function translateShapesX() {
 
       vertexObj.translateX(vertexIdx, diffX);
   }
+
+  updatePropertyValues();
 }
 
 translateXInput.addEventListener("focusout", translateShapesX);
@@ -91,6 +97,8 @@ function translateShapesY() {
 
       vertexObj.translateY(vertexIdx, diffY);
   }
+
+  updatePropertyValues();
 }
 
 translateYInput.addEventListener("focusout", translateShapesY);
@@ -109,6 +117,8 @@ function rotateShapes() {
     const obj = selectedShapes[i];
     obj.rotate(rad);
   }
+
+  updatePropertyValues();
 }
 
 rotateInput.addEventListener("focusout", rotateShapes);

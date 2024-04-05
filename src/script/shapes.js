@@ -504,29 +504,25 @@ class Rectangle extends Shape {
   }
 
   setWidth(newWidth) {
-    const halfWidth = this.width / 2;
     const halfDiff = (newWidth - this.width) / 2;
 
-    const anchorPx = [
-      denormalizeX(this.anchor[0]),
-      denormalizeY(this.anchor[1]),
-    ];
-
-    const initDiagonal = this.width / 2;
-    const finalDiagonal = halfWidth + halfDiff;
+    const cos = Math.cos(degreeToRadian(this.rotation));
+    const sin = Math.sin(degreeToRadian(this.rotation));
 
     for (let i = 0; i < this.numOfVertex; i++) {
-      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
-      const initVertical = this.getVertexYPx(i) - anchorPx[1];
+      if (i % 2 === 0) {
+        const finalX = this.getVertexXPx(i) - halfDiff * cos;
+        const finalY = this.getVertexYPx(i) - halfDiff * sin;
 
-      const ratioHorizontal = initHorizontal / initDiagonal;
-      const ratioVertical = initVertical / initDiagonal;
+        this.setVertexX(i, normalizeX(finalX), finalX);
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      } else {
+        const finalX = this.getVertexXPx(i) + halfDiff * cos;
+        const finalY = this.getVertexYPx(i) + halfDiff * sin;
 
-      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
-      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
-
-      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
-      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
+        this.setVertexX(i, normalizeX(finalX), finalX);
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      }
     }
 
     this.updateWidth();
@@ -534,29 +530,25 @@ class Rectangle extends Shape {
   }
 
   setHeight(newHeight) {
-    const halfHeight = this.height / 2;
     const halfDiff = (newHeight - this.height) / 2;
 
-    const anchorPx = [
-      denormalizeX(this.anchor[0]),
-      denormalizeY(this.anchor[1]),
-    ];
-
-    const initDiagonal = this.height / 2;
-    const finalDiagonal = halfHeight + halfDiff;
+    const cos = Math.cos(degreeToRadian(this.rotation));
+    const sin = Math.sin(degreeToRadian(this.rotation));
 
     for (let i = 0; i < this.numOfVertex; i++) {
-      const initHorizontal = this.getVertexXPx(i) - anchorPx[0];
-      const initVertical = this.getVertexYPx(i) - anchorPx[1];
+      if (i === 0 || i === 1) {
+        const finalX = this.getVertexXPx(i) + halfDiff * sin;
+        const finalY = this.getVertexYPx(i) - halfDiff * cos;
 
-      const ratioHorizontal = initHorizontal / initDiagonal;
-      const ratioVertical = initVertical / initDiagonal;
+        this.setVertexX(i, normalizeX(finalX), finalX);
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      } else {
+        const finalX = this.getVertexXPx(i) - halfDiff * sin;
+        const finalY = this.getVertexYPx(i) + halfDiff * cos;
 
-      const finalHorizontal = finalDiagonal * ratioHorizontal + anchorPx[0];
-      const finalVertical = finalDiagonal * ratioVertical + anchorPx[1];
-
-      this.setVertexX(i, normalizeX(finalHorizontal), finalHorizontal);
-      this.setVertexY(i, normalizeY(finalVertical), finalVertical);
+        this.setVertexX(i, normalizeX(finalX), finalX);
+        this.setVertexY(i, normalizeY(finalY), finalY);
+      }
     }
 
     this.updateHeight();
