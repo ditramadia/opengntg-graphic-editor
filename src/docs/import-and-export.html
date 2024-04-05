@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import and Export</title>
+  <link rel="icon" type="image/x-icon" href="../../public/logo-fav.ico">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="../styles/help.css">
+</head>
+
+
+<body>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <ul>
+      <li class="level-0">OpenGNTG for starters</li>
+      <a href="./canvas.html">
+        <li class="level-1">Canvas</li>
+      </a>
+      <a href="./basic-shapes.html">
+        <li class="level-1">Basic Shapes</li>
+      </a>
+      <a href="./polygon.html">
+        <li class="level-1">Polygon</li>
+      </a>
+      <a href="./editing-shapes.html">
+        <li class="level-1">Editing Shapes</li>
+      </a>
+      <a href="#import-and-export">
+        <li class="level-1">Import and Export</li>
+      </a>
+      <a href="#import">
+        <li class="level-2">Import</li>
+      </a>
+      <a href="#export">
+        <li class="level-2">Export</li>
+      </a>
+    </ul>
+  </div>
+
+  <!-- Content -->
+  <div class="content-container">
+    <div class="content">
+      <div class="title">
+        <h1 id="import-and-export">Import and Export</h1>
+        <p>OpenGNTG supports importing an object file to your canvas. Your shapes can also be exported from the canvas.
+        </p>
+      </div>
+
+      <section>
+
+        <section id="import">
+          <h3>Import</h3>
+          <p>Importing a shape or multiple shapes requires an object file stored as JSON file. To import the file,
+            select <span class="code-box">File > Import</span> in the toolbar, and then select the object file from your
+            computer. The object will imported and placed in the canvas.</p>
+          <video src="../../public/video/sample.mp4" autoplay loop>
+            <source src="../../public/video/sample.mp4" type="video/mp4">
+          </video>
+        </section>
+
+        <section id="export">
+          <h3>Export</h3>
+          <p>Select the shapes you want to export in the object list. Click export in the propery bar to export the
+            shape into you computer. The shape object will be stored as a JSON file.</p>
+          <video src="../../public/video/sample.mp4" autoplay loop>
+            <source src="../../public/video/sample.mp4" type="video/mp4">
+          </video>
+        </section>
+
+      </section>
+
+    </div>
+  </div>
+</body>
+
+</html>
