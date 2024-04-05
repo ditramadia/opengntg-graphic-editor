@@ -158,10 +158,12 @@ canvas.addEventListener("mousemove", (e) => {
   const diffY = y - initialMousePos[1];
 
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-    console.log(selectedPoints.parentShape);
     if (
       selectedPoints.parentShape.length === 1 &&
-      !(selectedPoints.parentShape[0] instanceof Line)
+      !(
+        selectedPoints.parentShape[0] instanceof Line ||
+        selectedPoints.parentShape[0] instanceof Polygon
+      )
     ) {
       const { x, y, x_pix, y_pix } = getMousePos(e);
 

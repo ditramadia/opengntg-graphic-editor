@@ -617,7 +617,6 @@ canvas.addEventListener("click", (e) => {
   const { x, y, x_pix, y_pix } = getMousePos(e);
 
   if (isEditingPolygon) {
-    showLog("Insert new polygon point");
     const currentPolygon = selectedShapes[0];
     currentPolygon.editPolygon(x, y, x_pix, y_pix, shapeColor);
     return;
