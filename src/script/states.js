@@ -609,8 +609,7 @@ canvas.addEventListener("click", (e) => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
-    selectedTool !== "polygon" ||
-    isEditing
+    selectedTool !== "polygon"
   ) {
     return;
   }
@@ -623,6 +622,8 @@ canvas.addEventListener("click", (e) => {
     currentPolygon.editPolygon(x, y, x_pix, y_pix, shapeColor);
     return;
   }
+
+  if (isEditing) return;
 
   if (isDrawing && selectedTool === "polygon") {
     const currentPolygon = shapes.polygons[shapes.polygons.length - 1];
