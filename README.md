@@ -81,6 +81,8 @@ Tubes 1 of Computer Graphics (IF3260). A simple graphics editor.
 <!-- USAGE -->
 ## Usage
 
+To see the full documentaiton (How to use), go to `File > Help` in the web app.
+
 <!-- TODO: Add hyperlink to each category and each points within the category -->
 ### Canvas
 1. Change color
@@ -105,7 +107,6 @@ Tubes 1 of Computer Graphics (IF3260). A simple graphics editor.
 5. Change width and height
 6. Rotate
 7. Scale
-8. Locking 
 
 ### Import and Export
 1. Import shapes

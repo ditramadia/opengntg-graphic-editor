@@ -1,4 +1,5 @@
 // == Global state ========================================================
+
 // WebGL
 let gl = undefined;
 
@@ -687,7 +688,7 @@ canvas.addEventListener("mousemove", (e) => {
 });
 
 // When the user stopped drawing
-canvas.addEventListener("mouseup", (e) => {
+canvas.addEventListener("mouseup", () => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
@@ -735,17 +736,57 @@ exportShapeBtn.addEventListener("click", () => {
 function importShapes(json) {
   const shapesJSON = JSON.parse(json);
   const shapeTypeMap = {
-    line: Line,
-    square: Square,
-    rectangle: Rectangle,
-    polygon: Polygon,
+    'line': Line,
+    'square': Square,
+    'rectangle': Rectangle,
+    'polygon': Polygon,
   };
 
   shapesJSON.forEach((shape) => {
     const ShapeType = shapeTypeMap[shape.type];
-    if (ShapeType) {
+    if (shape.type === "polygon") {
+      let firstColorBuffer = [
+        shape.colorBuffer[0],
+        shape.colorBuffer[1],
+        shape.colorBuffer[2],
+        shape.colorBuffer[3],
+      ];
+      let newShape = new Polygon(
+        shapes.polygons.length + 1,
+        shape.vertexBuffer[0],
+        shape.vertexBuffer[1],
+        shape.vertexPx[0],
+        shape.vertexPx[1],
+        firstColorBuffer
+      );
+
+      insertShapeToHTML("polygon", newShape);
+      shapes["polygons"].push(newShape);
+      newShape = shapes.polygons[shapes.polygons.length - 1];
+      for (let i = 1; i < shape.numOfVertex; i++) {
+        let colorBuffer = [
+          shape.colorBuffer[i * 4],
+          shape.colorBuffer[i * 4 + 1],
+          shape.colorBuffer[i * 4 + 2],
+          shape.colorBuffer[i * 4 + 3],
+        ];
+        newShape.addVertex(
+          shape.vertexBufferBase[i * 2],
+          shape.vertexBufferBase[i * 2 + 1],
+          shape.vertexPx[i * 2],
+          shape.vertexPx[i * 2 + 1],
+          colorBuffer,
+        );
+        insertPointToHTML("polygon", newShape);
+      }
+      newShape.rotation = shape.rotation;
+      newShape.rotationBase = shape.rotationBase;
+      newShape.width = shape.width;
+      newShape.height = shape.height;
+      newShape.anchor = shape.anchor;
+    } else {
       const newShape = new ShapeType(
-        shape.id,
+        shapes[shape.type + 's'].length + 1,
         shape.vertexBufferBase[0],
         shape.vertexBufferBase[1],
         shape.vertexPx[0],

@@ -996,7 +996,6 @@ class Polygon extends Shape {
 
     // Add a new vertex
     this.addVertex(x, y, xPx, yPx, rgbaColor);
-    this.ensureConvex()
   }
 
   isClosed() {
@@ -1011,7 +1010,6 @@ class Polygon extends Shape {
   }
 
   addVertex(x, y, xPx, yPx, rgbaColor) {
-    // Add the new vertex to the buffer
     this.vertexBuffer.push(x, y);
     this.vertexBufferBase.push(x, y);
     this.vertexPx.push(xPx, yPx);
@@ -1081,8 +1079,6 @@ class Polygon extends Shape {
   }
 
   pointDrag(i, xPx, yPx) {}
-
-
 
   render(program) {
     // Render vertex buffer
