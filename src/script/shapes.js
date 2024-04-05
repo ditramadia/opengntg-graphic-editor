@@ -968,15 +968,22 @@ class Polygon extends Shape {
     this.height = 0;
   }
 
-  removeVertex(i) {
-    this.vertexBuffer.splice(i * 2, 2);
-    this.vertexPx.splice(i * 2, 2);
-    this.colorBuffer.splice(i * 4, 4);
-    this.numOfVertex--;
-    this.updateAnchor();
-    this.updateWidth();
-    this.updateHeight();
-  }
+  // removeVertex(i) {
+  //   const isConvexHullAffected = this.isConvexHullAffected(i);
+  //
+  //   this.vertexBuffer.splice(i * 2, 2);
+  //   this.vertexBufferBase.splice(i * 2, 2);
+  //   this.vertexPx.splice(i * 2, 2);
+  //   this.colorBuffer.splice(i * 4, 4);
+  //   this.numOfVertex--;
+  //   this.updateAnchor();
+  //   this.updateWidth();
+  //   this.updateHeight();
+  //
+  //   if (isConvexHullAffected) {
+  //     this.updateConvexHull(); // Update convex hull after removing vertex
+  //   }
+  // }
 
   editPolygon(x, y, xPx, yPx, rgbaColor) {
     if (this.numOfVertex < 3) {
@@ -1010,6 +1017,7 @@ class Polygon extends Shape {
   }
 
   addVertex(x, y, xPx, yPx, rgbaColor) {
+    // Tambahkan titik baru ke vertex buffer
     this.vertexBuffer.push(x, y);
     this.vertexBufferBase.push(x, y);
     this.vertexPx.push(xPx, yPx);
@@ -1018,7 +1026,82 @@ class Polygon extends Shape {
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+
+    if (this.numOfVertex >= 3) {
+      // Ambil titik terbaru yang ditambahkan
+      const newPoint = [x, y];
+
+      // Cek apakah titik yang ditambahkan ada dalam convex hull
+      const pointInConvexHull = this.isPointInConvexHull(newPoint);
+
+      // Jika titik yang ditambahkan tidak ada dalam convex hull,
+      // kita perlu menambahkannya ke convex hull
+      if (!pointInConvexHull) {
+        this.addPointToConvexHull(newPoint);
+      }
+    }
   }
+
+  removeVertex(i) {
+    const isConvexHullAffected = this.isConvexHullAffected(i);
+
+    this.vertexBuffer.splice(i * 2, 2);
+    this.vertexBufferBase.splice(i * 2, 2);
+    this.vertexPx.splice(i * 2, 2);
+    this.colorBuffer.splice(i * 4, 4);
+    this.numOfVertex--;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+
+    if (isConvexHullAffected) {
+      // Update convex hull setelah menghapus titik
+      this.updateConvexHull();
+    }
+  }
+
+  isPointInConvexHull(point) {
+    // Loop melalui semua titik dalam convex hull dan cek apakah titik yang diberikan ada di dalamnya
+    for (let i = 0; i < this.convexHull.length; i++) {
+      if (this.convexHull[i][0] === point[0] && this.convexHull[i][1] === point[1]) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  addPointToConvexHull(newPoint) {
+    const updatedConvexHull = [];
+    let added = false;
+
+    // Loop melalui semua titik dalam convex hull
+    for (let i = 0; i < this.convexHull.length; i++) {
+      const currPoint = this.convexHull[i];
+      const nextPoint = this.convexHull[(i + 1) % this.convexHull.length];
+
+      // Tambahkan titik baru setelah menemukan dua titik yang terdekat dengan titik baru secara berurutan
+      updatedConvexHull.push(currPoint);
+      if (!added && this.areAdjacentPoints(currPoint, nextPoint, newPoint)) {
+        updatedConvexHull.push(newPoint);
+        added = true;
+      }
+    }
+
+    // Atau jika titik baru tidak ditambahkan di dalam loop di atas, tambahkan di akhir
+    if (!added) {
+      updatedConvexHull.push(newPoint);
+    }
+
+    // Perbarui convex hull
+    this.convexHull = updatedConvexHull;
+  }
+
+  areAdjacentPoints(point1, point2, newPoint) {
+    // Cek apakah titik baru berada di antara dua titik yang diberikan
+    return (point1[0] <= newPoint[0] && newPoint[0] <= point2[0]) || (point2[0] <= newPoint[0] && newPoint[0] <= point1[0]);
+  }
+
+
 
   closePolygon() {
     this.vertexBuffer.pop();
