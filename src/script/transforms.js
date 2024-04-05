@@ -16,16 +16,16 @@ function setShapesWidth() {
 
   // Change width for every selected shape
   for (let i = 0; i < selectedShapes.length; i++) {
-      vertexObj = selectedShapes[i];
-      vertexObj.setWidth(newWidth);
+    vertexObj = selectedShapes[i];
+    vertexObj.setWidth(newWidth);
   }
 }
 
 widthInput.addEventListener("focusout", setShapesWidth);
 widthInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-      event.preventDefault();
-      widthInput.blur();
+    event.preventDefault();
+    widthInput.blur();
   }
 });
 
@@ -35,17 +35,16 @@ function setShapesHeight() {
 
   // Change height for every selected shape
   for (let i = 0; i < selectedShapes.length; i++) {
-      vertexObj = selectedShapes[i];
-      vertexObj.setHeight(newHeight);
+    vertexObj = selectedShapes[i];
+    vertexObj.setHeight(newHeight);
   }
 }
-
 
 heightInput.addEventListener("focusout", setShapesHeight);
 heightInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-      event.preventDefault();
-      heightInput.blur();
+    event.preventDefault();
+    heightInput.blur();
   }
 });
 
@@ -54,24 +53,26 @@ function translateShapesX() {
   const valuePx = translateXInput.value;
   const valueX = normalizeX(valuePx);
 
-  const initialX = allShapesVertex[0].getVertexXBase(selectedPoints.pointIndex[0] || 0);
+  const initialX = allShapesVertex[0].getVertexXBase(
+    selectedPoints.pointIndex[0] || 0
+  );
 
   const diffX = valueX - initialX;
 
   // Translate every selected vertices
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-      vertexObj = selectedPoints.parentShape[i];
-      vertexIdx = selectedPoints.pointIndex[i];
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
 
-      vertexObj.translateX(vertexIdx, diffX);
+    vertexObj.translateX(vertexIdx, diffX);
   }
 }
 
 translateXInput.addEventListener("focusout", translateShapesX);
 translateXInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-      event.preventDefault();
-      translateXInput.blur();
+    event.preventDefault();
+    translateXInput.blur();
   }
 });
 
@@ -80,24 +81,26 @@ function translateShapesY() {
   const valuePx = translateYInput.value;
   const valueY = normalizeY(valuePx);
 
-  const initialY = allShapesVertex[0].getVertexYBase(selectedPoints.pointIndex[0] || 0);
+  const initialY = allShapesVertex[0].getVertexYBase(
+    selectedPoints.pointIndex[0] || 0
+  );
 
   const diffY = valueY - initialY;
 
   // Translate every selected vertices
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-      vertexObj = selectedPoints.parentShape[i];
-      vertexIdx = selectedPoints.pointIndex[i];
+    vertexObj = selectedPoints.parentShape[i];
+    vertexIdx = selectedPoints.pointIndex[i];
 
-      vertexObj.translateY(vertexIdx, diffY);
+    vertexObj.translateY(vertexIdx, diffY);
   }
 }
 
 translateYInput.addEventListener("focusout", translateShapesY);
 translateYInput.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
-      event.preventDefault();
-      translateYInput.blur();
+    event.preventDefault();
+    translateYInput.blur();
   }
 });
 
@@ -118,7 +121,6 @@ rotateInput.addEventListener("keydown", (event) => {
     rotateInput.blur();
   }
 });
-
 
 // == Move ================================================================
 // Variables
@@ -146,8 +148,11 @@ canvas.addEventListener("mousemove", (e) => {
   const diffY = y - initialMousePos[1];
 
   for (let i = 0; i < selectedPoints.parentShape.length; i++) {
-    console.log(selectedPoints.parentShape)
-    if (selectedPoints.parentShape.length === 1 && !(selectedPoints.parentShape[0] instanceof Line)) {
+    console.log(selectedPoints.parentShape);
+    if (
+      selectedPoints.parentShape.length === 1 &&
+      !(selectedPoints.parentShape[0] instanceof Line)
+    ) {
       const { x, y, x_pix, y_pix } = getMousePos(e);
 
       vertexObj = selectedPoints.parentShape[0];

@@ -297,12 +297,7 @@ class Square extends Shape {
     this.vertexBuffer = [x, y, x, y, x, y, x, y];
     this.vertexBufferBase = [x, y, x, y, x, y, x, y];
     this.vertexPx = [xPx, yPx, xPx, yPx, xPx, yPx, xPx, yPx];
-    this.colorBuffer = [
-      ...rgbaColor,
-      ...rgbaColor,
-      ...rgbaColor,
-      ...rgbaColor,
-    ];
+    this.colorBuffer = [...rgbaColor, ...rgbaColor, ...rgbaColor, ...rgbaColor];
     this.numOfVertex = 4;
     this.anchor = [x, y];
   }
@@ -331,14 +326,38 @@ class Square extends Shape {
     const directionX = xPx >= this.getVertexXPx(firstVertexIdx) ? 1 : -1;
     const directionY = yPx >= this.getVertexYPx(firstVertexIdx) ? 1 : -1;
 
-    this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
-    this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
+    this.setVertexX(
+      lastVertexIdx,
+      normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX),
+      this.getVertexXPx(firstVertexIdx) + size * directionX
+    );
+    this.setVertexY(
+      lastVertexIdx,
+      normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY),
+      this.getVertexYPx(firstVertexIdx) + size * directionY
+    );
 
-    this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
-    this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(firstVertexIdx)), this.getVertexYPx(firstVertexIdx));
+    this.setVertexX(
+      upperRightIdx,
+      normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX),
+      this.getVertexXPx(firstVertexIdx) + size * directionX
+    );
+    this.setVertexY(
+      upperRightIdx,
+      normalizeY(this.getVertexYPx(firstVertexIdx)),
+      this.getVertexYPx(firstVertexIdx)
+    );
 
-    this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(firstVertexIdx)), this.getVertexXPx(firstVertexIdx));
-    this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
+    this.setVertexX(
+      lowerLeftIdx,
+      normalizeX(this.getVertexXPx(firstVertexIdx)),
+      this.getVertexXPx(firstVertexIdx)
+    );
+    this.setVertexY(
+      lowerLeftIdx,
+      normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY),
+      this.getVertexYPx(firstVertexIdx) + size * directionY
+    );
 
     this.updateVertexBase();
     this.updateAnchor();
@@ -386,48 +405,190 @@ class Square extends Shape {
     const lowerLeftIdx = 2;
     const firstVertexIdx = 0;
 
-    const dx = Math.abs(xPx - this.getVertexXPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx));
-    const dy = Math.abs(yPx - this.getVertexYPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx));
+    const dx = Math.abs(
+      xPx -
+        this.getVertexXPx(
+          selectedPoint === lastVertexIdx
+            ? firstVertexIdx
+            : selectedPoint === upperRightIdx
+            ? lowerLeftIdx
+            : selectedPoint === lowerLeftIdx
+            ? upperRightIdx
+            : lastVertexIdx
+        )
+    );
+    const dy = Math.abs(
+      yPx -
+        this.getVertexYPx(
+          selectedPoint === lastVertexIdx
+            ? firstVertexIdx
+            : selectedPoint === upperRightIdx
+            ? lowerLeftIdx
+            : selectedPoint === lowerLeftIdx
+            ? upperRightIdx
+            : lastVertexIdx
+        )
+    );
     const size = Math.min(dx, dy);
-    const directionX = xPx >= this.getVertexXPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx) ? 1 : -1;
-    const directionY = yPx >= this.getVertexYPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx) ? 1 : -1;
+    const directionX =
+      xPx >=
+      this.getVertexXPx(
+        selectedPoint === lastVertexIdx
+          ? firstVertexIdx
+          : selectedPoint === upperRightIdx
+          ? lowerLeftIdx
+          : selectedPoint === lowerLeftIdx
+          ? upperRightIdx
+          : lastVertexIdx
+      )
+        ? 1
+        : -1;
+    const directionY =
+      yPx >=
+      this.getVertexYPx(
+        selectedPoint === lastVertexIdx
+          ? firstVertexIdx
+          : selectedPoint === upperRightIdx
+          ? lowerLeftIdx
+          : selectedPoint === lowerLeftIdx
+          ? upperRightIdx
+          : lastVertexIdx
+      )
+        ? 1
+        : -1;
 
     if (selectedPoint === lastVertexIdx) {
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX),
+        this.getVertexXPx(firstVertexIdx) + size * directionX
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY),
+        this.getVertexYPx(firstVertexIdx) + size * directionY
+      );
 
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX), this.getVertexXPx(firstVertexIdx) + size * directionX);
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(firstVertexIdx)), this.getVertexYPx(firstVertexIdx));
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx) + size * directionX),
+        this.getVertexXPx(firstVertexIdx) + size * directionX
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx)),
+        this.getVertexYPx(firstVertexIdx)
+      );
 
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(firstVertexIdx)), this.getVertexXPx(firstVertexIdx));
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY), this.getVertexYPx(firstVertexIdx) + size * directionY);
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx)),
+        this.getVertexXPx(firstVertexIdx)
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx) + size * directionY),
+        this.getVertexYPx(firstVertexIdx) + size * directionY
+      );
     } else if (selectedPoint === upperRightIdx) {
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(lowerLeftIdx) + size * directionX), this.getVertexXPx(lowerLeftIdx) + size * directionX);
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(lowerLeftIdx) + size * directionY), this.getVertexYPx(lowerLeftIdx) + size * directionY);
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx) + size * directionX),
+        this.getVertexXPx(lowerLeftIdx) + size * directionX
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx) + size * directionY),
+        this.getVertexYPx(lowerLeftIdx) + size * directionY
+      );
 
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(lowerLeftIdx) + size * directionX), this.getVertexXPx(lowerLeftIdx) + size * directionX);
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(lowerLeftIdx)), this.getVertexYPx(lowerLeftIdx));
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx) + size * directionX),
+        this.getVertexXPx(lowerLeftIdx) + size * directionX
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx)),
+        this.getVertexYPx(lowerLeftIdx)
+      );
 
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(lowerLeftIdx)), this.getVertexXPx(lowerLeftIdx));
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(lowerLeftIdx) + size * directionY), this.getVertexYPx(lowerLeftIdx) + size * directionY);
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx)),
+        this.getVertexXPx(lowerLeftIdx)
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx) + size * directionY),
+        this.getVertexYPx(lowerLeftIdx) + size * directionY
+      );
     } else if (selectedPoint === lowerLeftIdx) {
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(upperRightIdx) + size * directionX), this.getVertexXPx(upperRightIdx) + size * directionX);
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(upperRightIdx) + size * directionY), this.getVertexYPx(upperRightIdx) + size * directionY);
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx) + size * directionX),
+        this.getVertexXPx(upperRightIdx) + size * directionX
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx) + size * directionY),
+        this.getVertexYPx(upperRightIdx) + size * directionY
+      );
 
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(upperRightIdx) + size * directionX), this.getVertexXPx(upperRightIdx) + size * directionX);
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(upperRightIdx)), this.getVertexYPx(upperRightIdx));
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx) + size * directionX),
+        this.getVertexXPx(upperRightIdx) + size * directionX
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx)),
+        this.getVertexYPx(upperRightIdx)
+      );
 
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(upperRightIdx)), this.getVertexXPx(upperRightIdx));
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(upperRightIdx) + size * directionY), this.getVertexYPx(upperRightIdx) + size * directionY);
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx)),
+        this.getVertexXPx(upperRightIdx)
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx) + size * directionY),
+        this.getVertexYPx(upperRightIdx) + size * directionY
+      );
     } else if (selectedPoint === firstVertexIdx) {
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(lastVertexIdx) + size * directionX), this.getVertexXPx(lastVertexIdx) + size * directionX);
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(lastVertexIdx) + size * directionY), this.getVertexYPx(lastVertexIdx) + size * directionY);
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx) + size * directionX),
+        this.getVertexXPx(lastVertexIdx) + size * directionX
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx) + size * directionY),
+        this.getVertexYPx(lastVertexIdx) + size * directionY
+      );
 
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(lastVertexIdx)), this.getVertexXPx(lastVertexIdx));
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(lastVertexIdx) + size * directionY), this.getVertexYPx(lastVertexIdx) + size * directionY);
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx)),
+        this.getVertexXPx(lastVertexIdx)
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx) + size * directionY),
+        this.getVertexYPx(lastVertexIdx) + size * directionY
+      );
 
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(lastVertexIdx) + size * directionX), this.getVertexXPx(lastVertexIdx) + size * directionX);
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(lastVertexIdx)), this.getVertexYPx(lastVertexIdx));
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx) + size * directionX),
+        this.getVertexXPx(lastVertexIdx) + size * directionX
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx)),
+        this.getVertexYPx(lastVertexIdx)
+      );
     }
 
     this.updateVertexBase();
@@ -461,12 +622,7 @@ class Rectangle extends Shape {
     this.vertexBuffer = [x, y, x, y, x, y, x, y];
     this.vertexBufferBase = [x, y, x, y, x, y, x, y];
     this.vertexPx = [xPx, yPx, xPx, yPx, xPx, yPx, xPx, yPx];
-    this.colorBuffer = [
-      ...rgbaColor,
-      ...rgbaColor,
-      ...rgbaColor,
-      ...rgbaColor,
-    ];
+    this.colorBuffer = [...rgbaColor, ...rgbaColor, ...rgbaColor, ...rgbaColor];
     this.numOfVertex = 4;
     this.anchor = [x, y];
   }
@@ -477,7 +633,7 @@ class Rectangle extends Shape {
 
     // Render colorBuffer
     render(gl, program, "vertexColor", this.colorBuffer, 4);
-    
+
     // Draw the rectangle
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   }
@@ -492,10 +648,18 @@ class Rectangle extends Shape {
     this.setVertexY(lastVertexIdx, y, yPx);
 
     this.setVertexX(upperRightIdx, x, xPx);
-    this.setVertexY(upperRightIdx, this.getVertexY(firstVertexIdx), this.getVertexYPx(firstVertexIdx));
+    this.setVertexY(
+      upperRightIdx,
+      this.getVertexY(firstVertexIdx),
+      this.getVertexYPx(firstVertexIdx)
+    );
 
-    this.setVertexX(lowerLeftIdx, this.getVertexX(firstVertexIdx), this.getVertexXPx(firstVertexIdx));
-    this.setVertexY(lowerLeftIdx, y, yPx);  
+    this.setVertexX(
+      lowerLeftIdx,
+      this.getVertexX(firstVertexIdx),
+      this.getVertexXPx(firstVertexIdx)
+    );
+    this.setVertexY(lowerLeftIdx, y, yPx);
 
     this.updateVertexBase();
     this.updateAnchor();
@@ -569,13 +733,63 @@ class Rectangle extends Shape {
     const lowerLeftIdx = 2;
     const firstVertexIdx = 0;
 
-    var dx = Math.abs(xPx - this.getVertexXPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx));
-    var dy = Math.abs(yPx - this.getVertexYPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx));
-    const directionX = xPx >= this.getVertexXPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx) ? 1 : -1;
-    const directionY = yPx >= this.getVertexYPx(selectedPoint === lastVertexIdx ? firstVertexIdx : selectedPoint === upperRightIdx ? lowerLeftIdx : selectedPoint === lowerLeftIdx ? upperRightIdx : lastVertexIdx) ? 1 : -1;
-    
-    const currentWidth = Math.abs(this.getVertexXPx(upperRightIdx) - this.getVertexXPx(lowerLeftIdx));
-    const currentHeight = Math.abs(this.getVertexYPx(upperRightIdx) - this.getVertexYPx(lowerLeftIdx));
+    var dx = Math.abs(
+      xPx -
+        this.getVertexXPx(
+          selectedPoint === lastVertexIdx
+            ? firstVertexIdx
+            : selectedPoint === upperRightIdx
+            ? lowerLeftIdx
+            : selectedPoint === lowerLeftIdx
+            ? upperRightIdx
+            : lastVertexIdx
+        )
+    );
+    var dy = Math.abs(
+      yPx -
+        this.getVertexYPx(
+          selectedPoint === lastVertexIdx
+            ? firstVertexIdx
+            : selectedPoint === upperRightIdx
+            ? lowerLeftIdx
+            : selectedPoint === lowerLeftIdx
+            ? upperRightIdx
+            : lastVertexIdx
+        )
+    );
+    const directionX =
+      xPx >=
+      this.getVertexXPx(
+        selectedPoint === lastVertexIdx
+          ? firstVertexIdx
+          : selectedPoint === upperRightIdx
+          ? lowerLeftIdx
+          : selectedPoint === lowerLeftIdx
+          ? upperRightIdx
+          : lastVertexIdx
+      )
+        ? 1
+        : -1;
+    const directionY =
+      yPx >=
+      this.getVertexYPx(
+        selectedPoint === lastVertexIdx
+          ? firstVertexIdx
+          : selectedPoint === upperRightIdx
+          ? lowerLeftIdx
+          : selectedPoint === lowerLeftIdx
+          ? upperRightIdx
+          : lastVertexIdx
+      )
+        ? 1
+        : -1;
+
+    const currentWidth = Math.abs(
+      this.getVertexXPx(upperRightIdx) - this.getVertexXPx(lowerLeftIdx)
+    );
+    const currentHeight = Math.abs(
+      this.getVertexYPx(upperRightIdx) - this.getVertexYPx(lowerLeftIdx)
+    );
     const aspectRatio = currentWidth / currentHeight;
 
     if (dx > dy * aspectRatio) {
@@ -585,41 +799,137 @@ class Rectangle extends Shape {
     }
 
     if (selectedPoint === lastVertexIdx) {
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + dx * directionX), this.getVertexXPx(firstVertexIdx) + dx * directionX);
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + dy * directionY), this.getVertexYPx(firstVertexIdx) + dy * directionY);
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx) + dx * directionX),
+        this.getVertexXPx(firstVertexIdx) + dx * directionX
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx) + dy * directionY),
+        this.getVertexYPx(firstVertexIdx) + dy * directionY
+      );
 
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(firstVertexIdx) + dx * directionX), this.getVertexXPx(firstVertexIdx) + dx * directionX);
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(firstVertexIdx)), this.getVertexYPx(firstVertexIdx));
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx) + dx * directionX),
+        this.getVertexXPx(firstVertexIdx) + dx * directionX
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx)),
+        this.getVertexYPx(firstVertexIdx)
+      );
 
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(firstVertexIdx)), this.getVertexXPx(firstVertexIdx));
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(firstVertexIdx) + dy * directionY), this.getVertexYPx(firstVertexIdx) + dy * directionY);
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(firstVertexIdx)),
+        this.getVertexXPx(firstVertexIdx)
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(firstVertexIdx) + dy * directionY),
+        this.getVertexYPx(firstVertexIdx) + dy * directionY
+      );
     } else if (selectedPoint === upperRightIdx) {
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(lowerLeftIdx) + dx * directionX), this.getVertexXPx(lowerLeftIdx) + dx * directionX);
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(lowerLeftIdx) + dy * directionY), this.getVertexYPx(lowerLeftIdx) + dy * directionY);
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx) + dx * directionX),
+        this.getVertexXPx(lowerLeftIdx) + dx * directionX
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx) + dy * directionY),
+        this.getVertexYPx(lowerLeftIdx) + dy * directionY
+      );
 
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(lowerLeftIdx) + dx * directionX), this.getVertexXPx(lowerLeftIdx) + dx * directionX);
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(lowerLeftIdx)), this.getVertexYPx(lowerLeftIdx));
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx) + dx * directionX),
+        this.getVertexXPx(lowerLeftIdx) + dx * directionX
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx)),
+        this.getVertexYPx(lowerLeftIdx)
+      );
 
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(lowerLeftIdx)), this.getVertexXPx(lowerLeftIdx));
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(lowerLeftIdx) + dy * directionY), this.getVertexYPx(lowerLeftIdx) + dy * directionY);
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(lowerLeftIdx)),
+        this.getVertexXPx(lowerLeftIdx)
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(lowerLeftIdx) + dy * directionY),
+        this.getVertexYPx(lowerLeftIdx) + dy * directionY
+      );
     } else if (selectedPoint === lowerLeftIdx) {
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(upperRightIdx) + dx * directionX), this.getVertexXPx(upperRightIdx) + dx * directionX);
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(upperRightIdx) + dy * directionY), this.getVertexYPx(upperRightIdx) + dy * directionY);
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx) + dx * directionX),
+        this.getVertexXPx(upperRightIdx) + dx * directionX
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx) + dy * directionY),
+        this.getVertexYPx(upperRightIdx) + dy * directionY
+      );
 
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(upperRightIdx) + dx * directionX), this.getVertexXPx(upperRightIdx) + dx * directionX);
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(upperRightIdx)), this.getVertexYPx(upperRightIdx));
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx) + dx * directionX),
+        this.getVertexXPx(upperRightIdx) + dx * directionX
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx)),
+        this.getVertexYPx(upperRightIdx)
+      );
 
-      this.setVertexX(lastVertexIdx, normalizeX(this.getVertexXPx(upperRightIdx)), this.getVertexXPx(upperRightIdx));
-      this.setVertexY(lastVertexIdx, normalizeY(this.getVertexYPx(upperRightIdx) + dy * directionY), this.getVertexYPx(upperRightIdx) + dy * directionY);
+      this.setVertexX(
+        lastVertexIdx,
+        normalizeX(this.getVertexXPx(upperRightIdx)),
+        this.getVertexXPx(upperRightIdx)
+      );
+      this.setVertexY(
+        lastVertexIdx,
+        normalizeY(this.getVertexYPx(upperRightIdx) + dy * directionY),
+        this.getVertexYPx(upperRightIdx) + dy * directionY
+      );
     } else if (selectedPoint === firstVertexIdx) {
-      this.setVertexX(firstVertexIdx, normalizeX(this.getVertexXPx(lastVertexIdx) + dx * directionX), this.getVertexXPx(lastVertexIdx) + dx * directionX);
-      this.setVertexY(firstVertexIdx, normalizeY(this.getVertexYPx(lastVertexIdx) + dy * directionY), this.getVertexYPx(lastVertexIdx) + dy * directionY);
+      this.setVertexX(
+        firstVertexIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx) + dx * directionX),
+        this.getVertexXPx(lastVertexIdx) + dx * directionX
+      );
+      this.setVertexY(
+        firstVertexIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx) + dy * directionY),
+        this.getVertexYPx(lastVertexIdx) + dy * directionY
+      );
 
-      this.setVertexX(upperRightIdx, normalizeX(this.getVertexXPx(lastVertexIdx) + dx * directionX), this.getVertexXPx(lastVertexIdx) + dx * directionX);
-      this.setVertexY(upperRightIdx, normalizeY(this.getVertexYPx(lastVertexIdx)), this.getVertexYPx(lastVertexIdx));
+      this.setVertexX(
+        upperRightIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx) + dx * directionX),
+        this.getVertexXPx(lastVertexIdx) + dx * directionX
+      );
+      this.setVertexY(
+        upperRightIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx)),
+        this.getVertexYPx(lastVertexIdx)
+      );
 
-      this.setVertexX(lowerLeftIdx, normalizeX(this.getVertexXPx(lastVertexIdx)), this.getVertexXPx(lastVertexIdx));
-      this.setVertexY(lowerLeftIdx, normalizeY(this.getVertexYPx(lastVertexIdx) + dy * directionY), this.getVertexYPx(lastVertexIdx) + dy * directionY);
+      this.setVertexX(
+        lowerLeftIdx,
+        normalizeX(this.getVertexXPx(lastVertexIdx)),
+        this.getVertexXPx(lastVertexIdx)
+      );
+      this.setVertexY(
+        lowerLeftIdx,
+        normalizeY(this.getVertexYPx(lastVertexIdx) + dy * directionY),
+        this.getVertexYPx(lastVertexIdx) + dy * directionY
+      );
     }
 
     this.updateVertexBase();
@@ -734,6 +1044,9 @@ class Polygon extends Shape {
     this.updateWidth();
     this.updateHeight();
   }
+
+  pointDrag(i, xPx, yPx) {}
+
   render(program) {
     // Render vertex buffer
     render(gl, program, "vertexPosition", this.vertexBuffer, 2);

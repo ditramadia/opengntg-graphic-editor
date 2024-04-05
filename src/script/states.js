@@ -498,7 +498,6 @@ function updatePropertyBar() {
 
   if (selectedTool === "cursor") {
     canvas.style.cursor = "default";
-    return;
   }
   if (selectedTool === "canvas") {
     canvas.style.cursor = "default";
@@ -586,7 +585,7 @@ canvas.addEventListener("mousedown", (e) => {
     insertShapeToHTML("line", newLine);
   }
 
-  if (selectedTool === 'square') {
+  if (selectedTool === "square") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     const newId = shapes.squares.length + 1;
     const newSquare = new Square(newId, x, y, x_pix, y_pix, shapeColor);
@@ -594,7 +593,7 @@ canvas.addEventListener("mousedown", (e) => {
     insertShapeToHTML("square", newSquare);
   }
 
-  if (selectedTool === 'rectangle') {
+  if (selectedTool === "rectangle") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     const newId = shapes.rectangles.length + 1;
     const newRectangle = new Rectangle(newId, x, y, x_pix, y_pix, shapeColor);
@@ -610,7 +609,8 @@ canvas.addEventListener("click", (e) => {
   if (
     selectedTool === "cursor" ||
     selectedTool === "canvas" ||
-    selectedTool !== "polygon"
+    selectedTool !== "polygon" ||
+    isEditing
   ) {
     return;
   }
@@ -660,14 +660,19 @@ canvas.addEventListener("mousemove", (e) => {
     shapes.lines[shapes.lines.length - 1].setEndVertex(x, y, x_pix, y_pix);
   }
 
-  if (selectedTool === 'square') {
+  if (selectedTool === "square") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
     shapes.squares[shapes.squares.length - 1].setEndVertex(x, y, x_pix, y_pix);
   }
 
-  if (selectedTool === 'rectangle') {
+  if (selectedTool === "rectangle") {
     const { x, y, x_pix, y_pix } = getMousePos(e);
-    shapes.rectangles[shapes.rectangles.length - 1].setEndVertex(x, y, x_pix, y_pix);
+    shapes.rectangles[shapes.rectangles.length - 1].setEndVertex(
+      x,
+      y,
+      x_pix,
+      y_pix
+    );
   }
 
   if (selectedTool === "polygon") {
@@ -700,7 +705,8 @@ canvas.addEventListener("mouseup", (e) => {
 
 // Export shapes to JSON
 exportShapeBtn.addEventListener("click", () => {
-  const exportObj = selectedShapes.length > 0 ? selectedShapes : allShapesVertex;
+  const exportObj =
+    selectedShapes.length > 0 ? selectedShapes : allShapesVertex;
   exportObj.forEach((obj) => {
     if (obj instanceof Line) {
       obj.type = "line";
@@ -721,7 +727,7 @@ exportShapeBtn.addEventListener("click", () => {
 
   const a = document.createElement("a");
   a.href = url;
-  a.download = `shapes-${Date.now()}.json`
+  a.download = `shapes-${Date.now()}.json`;
   a.click();
 });
 
@@ -729,10 +735,10 @@ exportShapeBtn.addEventListener("click", () => {
 function importShapes(json) {
   const shapesJSON = JSON.parse(json);
   const shapeTypeMap = {
-    "line": Line,
-    "square": Square,
-    "rectangle": Rectangle,
-    "polygon": Polygon
+    line: Line,
+    square: Square,
+    rectangle: Rectangle,
+    polygon: Polygon,
   };
 
   shapesJSON.forEach((shape) => {
@@ -757,7 +763,7 @@ function importShapes(json) {
       newShape.colorBuffer = shape.colorBuffer;
       newShape.anchor = shape.anchor;
       insertShapeToHTML(shape.type, newShape);
-      shapes[shape.type + 's'].push(newShape);
+      shapes[shape.type + "s"].push(newShape);
     }
   });
 }
@@ -780,13 +786,13 @@ deleteShapeBtn.addEventListener("click", () => {
   selectedShapes.forEach((shape) => {
     let type;
     if (shape instanceof Line) {
-        type = "line";
+      type = "line";
     } else if (shape instanceof Square) {
-        type = "square";
+      type = "square";
     } else if (shape instanceof Rectangle) {
-        type = "rectangle";
+      type = "rectangle";
     } else if (shape instanceof Polygon) {
-        type = "polygon";
+      type = "polygon";
     }
     removeShapeFromHTML(type, shape);
   });
