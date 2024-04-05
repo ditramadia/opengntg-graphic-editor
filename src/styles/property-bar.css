@@ -148,18 +148,3 @@
 #export-btn:active {
   background-color: var(--tertiary-color);
 }
-
-#delete-btn {
-  background-color: var(--secondary-color);
-  border: solid 1px var(--white);
-  padding: 10px;
-  border-radius: 8px;
-  color: var(--white);
-  font-family: "Poppins", sans-serif;
-
-  cursor: pointer;
-}
-
-#delete-btn:active {
-  background-color: var(--tertiary-color);
-}

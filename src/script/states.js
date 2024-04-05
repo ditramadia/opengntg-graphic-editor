@@ -771,33 +771,34 @@ function importShapes(json) {
 
 // == Delete ==============================================================
 
-// Delete selected shapes
-deleteShapeBtn.addEventListener("click", () => {
+window.addEventListener("keydown", (e) => {
   if (!isEditing) {
     return;
   }
 
-  // Delete selected shapes
-  for (let i = 0; i < selectedShapes.length; i++) {
-    vertexObj = selectedShapes[i];
-    vertexObj.delete();
-  }
-
-  // Delete from HTML
-  selectedShapes.forEach((shape) => {
-    let type;
-    if (shape instanceof Line) {
-      type = "line";
-    } else if (shape instanceof Square) {
-      type = "square";
-    } else if (shape instanceof Rectangle) {
-      type = "rectangle";
-    } else if (shape instanceof Polygon) {
-      type = "polygon";
+  if (e.key == "Delete") {
+    // Delete selected shapes
+    for (let i = 0; i < selectedShapes.length; i++) {
+      vertexObj = selectedShapes[i];
+      vertexObj.delete();
     }
-    removeShapeFromHTML(type, shape);
-  });
 
-  // Update selected objects
-  updateSelectedObjects();
+    // Delete from HTML
+    selectedShapes.forEach((shape) => {
+      let type;
+      if (shape instanceof Line) {
+        type = "line";
+      } else if (shape instanceof Square) {
+        type = "square";
+      } else if (shape instanceof Rectangle) {
+        type = "rectangle";
+      } else if (shape instanceof Polygon) {
+        type = "polygon";
+      }
+      removeShapeFromHTML(type, shape);
+    });
+
+    // Update selected objects
+    updateSelectedObjects();
+  }
 });
