@@ -1019,7 +1019,7 @@ class Polygon extends Shape {
     this.numOfVertex++;
 
     // Ensure convexity
-    // this.ensureConvex();
+    this.ensureConvex();
 
     // Update anchor, width, and height
     this.updateAnchor();
@@ -1037,26 +1037,21 @@ class Polygon extends Shape {
     // Compute convex hull
     const hull = convexHull(points);
 
-    // Check if convex hull points are valid
-    if (hull && hull.length > 0) {
-      // Update vertexBuffer with convex hull vertices
-      const newVertexBuffer = [];
-      for (let i = 0; i < hull.length; i++) {
-        newVertexBuffer.push(hull[i][0], hull[i][1]);
-      }
-      this.vertexBuffer = newVertexBuffer;
-      this.numOfVertex = hull.length;
+    // Update vertexBuffer with convex hull vertices
+    const newVertexBuffer = [];
+    for (let i = 0; i < hull.length; i++) {
+      newVertexBuffer.push(hull[i][0], hull[i][1]);
+    }
+    this.vertexBuffer = newVertexBuffer;
+    this.numOfVertex = hull.length;
 
-      // Ensure the last vertex is equal to the first to close the polygon
-      if (this.numOfVertex > 0) {
-        this.vertexBuffer.push(hull[0][0], hull[0][1]);
-        this.numOfVertex++;
-      }
-    } else {
-      // If convex hull computation fails, keep the existing vertexBuffer
-      console.error("Convex hull computation failed.");
+    // Ensure the last vertex is equal to the first to close the polygon
+    if (this.numOfVertex > 0) {
+      this.vertexBuffer.push(hull[0][0], hull[0][1]);
+      this.numOfVertex++;
     }
   }
+
 
   calculateAngle(x1, y1, x2, y2, x3, y3) {
     const dx1 = x1 - x2;
