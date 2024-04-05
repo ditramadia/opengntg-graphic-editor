@@ -968,22 +968,15 @@ class Polygon extends Shape {
     this.height = 0;
   }
 
-  // removeVertex(i) {
-  //   const isConvexHullAffected = this.isConvexHullAffected(i);
-  //
-  //   this.vertexBuffer.splice(i * 2, 2);
-  //   this.vertexBufferBase.splice(i * 2, 2);
-  //   this.vertexPx.splice(i * 2, 2);
-  //   this.colorBuffer.splice(i * 4, 4);
-  //   this.numOfVertex--;
-  //   this.updateAnchor();
-  //   this.updateWidth();
-  //   this.updateHeight();
-  //
-  //   if (isConvexHullAffected) {
-  //     this.updateConvexHull(); // Update convex hull after removing vertex
-  //   }
-  // }
+  removeVertex(i) {
+    this.vertexBuffer.splice(i * 2, 2);
+    this.vertexPx.splice(i * 2, 2);
+    this.colorBuffer.splice(i * 4, 4);
+    this.numOfVertex--;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
 
   editPolygon(x, y, xPx, yPx, rgbaColor) {
     if (this.numOfVertex < 3) {
@@ -1003,6 +996,7 @@ class Polygon extends Shape {
 
     // Add a new vertex
     this.addVertex(x, y, xPx, yPx, rgbaColor);
+    this.ensureConvex()
   }
 
   isClosed() {
@@ -1017,91 +1011,62 @@ class Polygon extends Shape {
   }
 
   addVertex(x, y, xPx, yPx, rgbaColor) {
-    // Tambahkan titik baru ke vertex buffer
+    // Add the new vertex to the buffer
     this.vertexBuffer.push(x, y);
     this.vertexBufferBase.push(x, y);
     this.vertexPx.push(xPx, yPx);
     this.colorBuffer.push(...rgbaColor);
     this.numOfVertex++;
+
+    // Ensure convexity
+    // this.ensureConvex();
+
+    // Update anchor, width, and height
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+  }
 
-    if (this.numOfVertex >= 3) {
-      // Ambil titik terbaru yang ditambahkan
-      const newPoint = [x, y];
+  ensureConvex() {
+    // Convert vertices to format compatible with convexHull function
+    const points = [];
+    for (let i = 0; i < this.vertexBuffer.length; i += 2) {
+      points.push([this.vertexBuffer[i], this.vertexBuffer[i + 1]]);
+    }
 
-      // Cek apakah titik yang ditambahkan ada dalam convex hull
-      const pointInConvexHull = this.isPointInConvexHull(newPoint);
+    // Compute convex hull
+    const hull = convexHull(points);
 
-      // Jika titik yang ditambahkan tidak ada dalam convex hull,
-      // kita perlu menambahkannya ke convex hull
-      if (!pointInConvexHull) {
-        this.addPointToConvexHull(newPoint);
+    // Check if convex hull points are valid
+    if (hull && hull.length > 0) {
+      // Update vertexBuffer with convex hull vertices
+      const newVertexBuffer = [];
+      for (let i = 0; i < hull.length; i++) {
+        newVertexBuffer.push(hull[i][0], hull[i][1]);
       }
-    }
-  }
+      this.vertexBuffer = newVertexBuffer;
+      this.numOfVertex = hull.length;
 
-  removeVertex(i) {
-    const isConvexHullAffected = this.isConvexHullAffected(i);
-
-    this.vertexBuffer.splice(i * 2, 2);
-    this.vertexBufferBase.splice(i * 2, 2);
-    this.vertexPx.splice(i * 2, 2);
-    this.colorBuffer.splice(i * 4, 4);
-    this.numOfVertex--;
-    this.updateAnchor();
-    this.updateWidth();
-    this.updateHeight();
-
-    if (isConvexHullAffected) {
-      // Update convex hull setelah menghapus titik
-      this.updateConvexHull();
-    }
-  }
-
-  isPointInConvexHull(point) {
-    // Loop melalui semua titik dalam convex hull dan cek apakah titik yang diberikan ada di dalamnya
-    for (let i = 0; i < this.convexHull.length; i++) {
-      if (this.convexHull[i][0] === point[0] && this.convexHull[i][1] === point[1]) {
-        return true;
+      // Ensure the last vertex is equal to the first to close the polygon
+      if (this.numOfVertex > 0) {
+        this.vertexBuffer.push(hull[0][0], hull[0][1]);
+        this.numOfVertex++;
       }
+    } else {
+      // If convex hull computation fails, keep the existing vertexBuffer
+      console.error("Convex hull computation failed.");
     }
-    return false;
   }
 
-  addPointToConvexHull(newPoint) {
-    const updatedConvexHull = [];
-    let added = false;
-
-    // Loop melalui semua titik dalam convex hull
-    for (let i = 0; i < this.convexHull.length; i++) {
-      const currPoint = this.convexHull[i];
-      const nextPoint = this.convexHull[(i + 1) % this.convexHull.length];
-
-      // Tambahkan titik baru setelah menemukan dua titik yang terdekat dengan titik baru secara berurutan
-      updatedConvexHull.push(currPoint);
-      if (!added && this.areAdjacentPoints(currPoint, nextPoint, newPoint)) {
-        updatedConvexHull.push(newPoint);
-        added = true;
-      }
-    }
-
-    // Atau jika titik baru tidak ditambahkan di dalam loop di atas, tambahkan di akhir
-    if (!added) {
-      updatedConvexHull.push(newPoint);
-    }
-
-    // Perbarui convex hull
-    this.convexHull = updatedConvexHull;
+  calculateAngle(x1, y1, x2, y2, x3, y3) {
+    const dx1 = x1 - x2;
+    const dy1 = y1 - y2;
+    const dx2 = x3 - x2;
+    const dy2 = y3 - y2;
+    const dotProduct = dx1 * dx2 + dy1 * dy2;
+    const det = dx1 * dy2 - dx2 * dy1;
+    return Math.atan2(det, dotProduct);
   }
-
-  areAdjacentPoints(point1, point2, newPoint) {
-    // Cek apakah titik baru berada di antara dua titik yang diberikan
-    return (point1[0] <= newPoint[0] && newPoint[0] <= point2[0]) || (point2[0] <= newPoint[0] && newPoint[0] <= point1[0]);
-  }
-
-
 
   closePolygon() {
     this.vertexBuffer.pop();
@@ -1122,6 +1087,8 @@ class Polygon extends Shape {
 
   pointDrag(i, xPx, yPx) {}
 
+
+
   render(program) {
     // Render vertex buffer
     render(gl, program, "vertexPosition", this.vertexBuffer, 2);
@@ -1138,6 +1105,57 @@ class Polygon extends Shape {
       }
     }
   }
+}
+
+function orientation(p, q, r) {
+  let val = (q[1] - p[1]) * (r[0] - q[0]) -
+      (q[0] - p[0]) * (r[1] - q[1]);
+
+  if (val == 0) return 0; // colinear
+  return (val > 0) ? 1 : 2; // clock or counterclock wise
+}
+
+// Function to compute convex hull of a set of points
+function convexHull(points) {
+  // There must be at least 3 points
+  if (points.length < 3) return null;
+
+  // Initialize result
+  let hull = [];
+
+  // Find the leftmost point
+  let l = 0;
+  for (let i = 1; i < points.length; i++) {
+    if (points[i][0] < points[l][0]) l = i;
+  }
+
+  // Start from leftmost point, keep moving counterclockwise
+  // until reach the start point again
+  let p = l, q;
+  do {
+    // Add current point to result
+    hull.push(points[p]);
+
+    // Search for a point 'q' such that orientation(p, x,
+    // q) is counterclockwise for all points 'x'. The idea
+    // is to keep track of last visited most counterclock-
+    // wise point in q. If any point 'i' is more counterclock-
+    // wise than q, then update q.
+    q = (p + 1) % points.length;
+    for (let i = 0; i < points.length; i++) {
+      // If i is more counterclockwise than current q, then
+      // update q
+      if (orientation(points[p], points[i], points[q]) == 2) {
+        q = i;
+      }
+    }
+
+    // Set p as q for next iteration, so that q is added to
+    // result 'hull'
+    p = q;
+  } while (p != l);
+
+  return hull;
 }
 
 
