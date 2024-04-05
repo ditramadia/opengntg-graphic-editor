@@ -958,6 +958,7 @@ class Polygon extends Shape {
     this.colorBuffer = [...rgbaColor, ...rgbaColor];
     this.numOfVertex = 2;
     this.anchor = [x, y];
+    this.convexHull = [];
   }
 
   updateWidth() {
@@ -970,12 +971,19 @@ class Polygon extends Shape {
 
   removeVertex(i) {
     this.vertexBuffer.splice(i * 2, 2);
+    this.vertexBufferBase.splice(i * 2, 2);
     this.vertexPx.splice(i * 2, 2);
     this.colorBuffer.splice(i * 4, 4);
     this.numOfVertex--;
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+    this.updateConvexHull(); // Update convex hull after removing vertex
+  }
+
+  updateConvexHull() {
+    const points = this.getVertices();
+    this.convexHull = convexHull(points);
   }
 
   editPolygon(x, y, xPx, yPx, rgbaColor) {
@@ -990,35 +998,24 @@ class Polygon extends Shape {
       const dx = this.getVertexX(i) - x;
       const dy = this.getVertexY(i) - y;
       const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < minDistance) {
-            minDistance = distance;
-            index = i;
-        }
+      if (distance < minDistance) {
+        minDistance = distance;
+        index = i;
+      }
       if (distance < 0.05) {
         this.removeVertex(i);
         return;
       }
     }
 
-    const dxAf = (index === this.numOfVertex - 1)
-        ?this.getVertexX(0) - x
-        :this.getVertexX(index+1) - x;
-    const dyAf = (index === this.numOfVertex - 1)
-        ?this.getVertexX(0) - x
-        :this.getVertexY(index+1) - y;
-    const distanceAf = Math.sqrt(dxAf * dxAf + dyAf * dyAf);
-    const dxBf = this.getVertexX(index-1) - x;
-    const dyBf = this.getVertexY(index-1) - y;
-    const distanceBf = Math.sqrt(dxBf * dxBf + dyBf * dyBf);
-
     // Add a new vertex
-    (distanceAf>distanceBf)?this.addVertexSpecificIndex(x, y, xPx, yPx, rgbaColor, (index === this.numOfVertex - 1)?0:index+1):
-    this.addVertexSpecificIndex(x, y, xPx, yPx, rgbaColor, index);
+    this.addVertex(x, y, xPx, yPx, rgbaColor);
+    this.updateConvexHull(); // Update convex hull after adding vertex
   }
 
   isClosed() {
     if (this.numOfVertex < 3) {
-      return;
+      return false;
     }
     const lastVertexIdx = this.numOfVertex - 1;
     const dx = this.getVertexX(0) - this.getVertexX(lastVertexIdx);
@@ -1050,25 +1047,42 @@ class Polygon extends Shape {
   }
 
   closePolygon() {
-    this.vertexBuffer.pop();
-    this.vertexBuffer.pop();
-    this.vertexBufferBase.pop();
-    this.vertexBufferBase.pop();
-    this.vertexPx.pop();
-    this.vertexPx.pop();
-    this.colorBuffer.pop();
-    this.colorBuffer.pop();
-    this.colorBuffer.pop();
-    this.colorBuffer.pop();
-    this.numOfVertex -= 1;
-    this.updateAnchor();
-    this.updateWidth();
-    this.updateHeight();
+    if (this.isClosed()) {
+      this.vertexBuffer.pop();
+      this.vertexBuffer.pop();
+      this.vertexBufferBase.pop();
+      this.vertexBufferBase.pop();
+      this.vertexPx.pop();
+      this.vertexPx.pop();
+      this.colorBuffer.pop();
+      this.colorBuffer.pop();
+      this.colorBuffer.pop();
+      this.colorBuffer.pop();
+      this.numOfVertex -= 1;
+      this.updateAnchor();
+      this.updateWidth();
+      this.updateHeight();
+    }
   }
 
-  pointDrag(i, xPx, yPx) {}
+  pointDrag(i, xPx, yPx) {
+    // Implement point dragging logic if needed
+  }
+
+  getVertices() {
+    const vertices = [];
+    for (let i = 0; i < this.numOfVertex; i++) {
+      vertices.push([this.getVertexX(i), this.getVertexY(i)]);
+    }
+    return vertices;
+  }
 
   render(program) {
+    // Render convex hull
+    if (this.convexHull.length > 0) {
+      render(gl, program, "vertexPosition", flatten(this.convexHull), 2, gl.LINE_LOOP);
+    }
+
     // Render vertex buffer
     render(gl, program, "vertexPosition", this.vertexBuffer, 2);
 
@@ -1085,3 +1099,61 @@ class Polygon extends Shape {
     }
   }
 }
+
+function orientation(p, q, r) {
+  let val = (q[1] - p[1]) * (r[0] - q[0]) -
+      (q[0] - p[0]) * (r[1] - q[1]);
+
+  if (val == 0) return 0; // colinear
+  return (val > 0) ? 1 : 2; // clock or counterclock wise
+}
+
+// Function to compute convex hull of a set of points
+function convexHull(points) {
+  // There must be at least 3 points
+  if (points.length < 3) return [];
+
+  // Initialize result
+  let hull = [];
+
+  // Find the leftmost point
+  let l = 0;
+  for (let i = 1; i < points.length; i++) {
+    if (points[i][0] < points[l][0]) l = i;
+  }
+
+  // Start from leftmost point, keep moving counterclockwise
+  // until reach the start point again
+  let p = l, q;
+  do {
+    // Add current point to result
+    hull.push(points[p]);
+
+    // Search for a point 'q' such that orientation(p, x,
+    // q) is counterclockwise for all points 'x'. The idea
+    // is to keep track of last visited most counterclock-
+    // wise point in q. If any point 'i' is more counterclock-
+    // wise than q, then update q.
+    q = (p + 1) % points.length;
+    for (let i = 0; i < points.length; i++) {
+      // If i is more counterclockwise than current q, then
+      // update q
+      if (orientation(points[p], points[i], points[q]) == 2) {
+        q = i;
+      }
+    }
+
+    // Set p as q for next iteration, so that q is added to
+    // result 'hull'
+    p = q;
+
+    // Stop if we reach the starting point again
+  } while (p != l);
+
+  return hull;
+}
+
+
+
+
+
