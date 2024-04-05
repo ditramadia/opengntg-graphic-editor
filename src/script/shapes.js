@@ -1010,14 +1010,59 @@ class Polygon extends Shape {
   }
 
   addVertex(x, y, xPx, yPx, rgbaColor) {
+    // Add the new vertex to the buffer
     this.vertexBuffer.push(x, y);
     this.vertexBufferBase.push(x, y);
     this.vertexPx.push(xPx, yPx);
     this.colorBuffer.push(...rgbaColor);
     this.numOfVertex++;
+
+    // Ensure convexity
+    this.ensureConvex();
+
+    // Update anchor, width, and height
     this.updateAnchor();
     this.updateWidth();
     this.updateHeight();
+  }
+
+  ensureConvex() {
+    // If the number of vertices is less than 3, the polygon is already convex
+    if (this.numOfVertex < 3) {
+      return;
+    }
+
+    // Check the last three vertices to see if they form a convex angle
+    const n = this.numOfVertex;
+    const last = this.numOfVertex - 1;
+    const angle = this.calculateAngle(
+      this.getVertexX(n - 3),
+      this.getVertexY(n - 3),
+      this.getVertexX(n - 2),
+      this.getVertexY(n - 2),
+      this.getVertexX(last),
+      this.getVertexY(last)
+    );
+
+    // If the angle is concave, remove the middle vertex and recursively check again
+    if (angle > Math.PI) {
+      this.vertexBuffer.splice((n - 2) * 2, 2);
+      this.vertexBufferBase.splice((n - 2) * 2, 2);
+      this.vertexPx.splice((n - 2) * 2, 2);
+      this.colorBuffer.splice((n - 2) * 4, 4);
+      this.numOfVertex--;
+      this.ensureConvex(); // Recursively check again
+    }
+  }
+
+  calculateAngle(x1, y1, x2, y2, x3, y3) {
+    const dx1 = x1 - x2;
+    const dy1 = y1 - y2;
+    const dx2 = x3 - x2;
+    const dy2 = y3 - y2;
+    const dotProduct = dx1 * dx2 + dy1 * dy2;
+    const det = dx1 * dy2 - dx2 * dy1;
+    return Math.atan2(det, dotProduct);
   }
 
   closePolygon() {
