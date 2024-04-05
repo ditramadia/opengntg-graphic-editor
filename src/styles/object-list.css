@@ -26,6 +26,7 @@
 #dev-box {
   left: 0;
   bottom: 0;
+  display: none;
 
   width: 100%;
   height: fit-content;
