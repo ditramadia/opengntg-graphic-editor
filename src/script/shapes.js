@@ -984,18 +984,36 @@ class Polygon extends Shape {
     }
 
     // If a vertex is selected, remove the vertex
+    let minDistance = Number.MAX_SAFE_INTEGER;
+    let index = -1;
     for (let i = 0; i < this.numOfVertex; i++) {
       const dx = this.getVertexX(i) - x;
       const dy = this.getVertexY(i) - y;
       const distance = Math.sqrt(dx * dx + dy * dy);
+        if (distance < minDistance) {
+            minDistance = distance;
+            index = i;
+        }
       if (distance < 0.05) {
         this.removeVertex(i);
         return;
       }
     }
 
+    const dxAf = (index === this.numOfVertex - 1)
+        ?this.getVertexX(0) - x
+        :this.getVertexX(index+1) - x;
+    const dyAf = (index === this.numOfVertex - 1)
+        ?this.getVertexX(0) - x
+        :this.getVertexY(index+1) - y;
+    const distanceAf = Math.sqrt(dxAf * dxAf + dyAf * dyAf);
+    const dxBf = this.getVertexX(index-1) - x;
+    const dyBf = this.getVertexY(index-1) - y;
+    const distanceBf = Math.sqrt(dxBf * dxBf + dyBf * dyBf);
+
     // Add a new vertex
-    this.addVertex(x, y, xPx, yPx, rgbaColor);
+    (distanceAf>distanceBf)?this.addVertexSpecificIndex(x, y, xPx, yPx, rgbaColor, (index === this.numOfVertex - 1)?0:index+1):
+    this.addVertexSpecificIndex(x, y, xPx, yPx, rgbaColor, index);
   }
 
   isClosed() {
@@ -1014,6 +1032,17 @@ class Polygon extends Shape {
     this.vertexBufferBase.push(x, y);
     this.vertexPx.push(xPx, yPx);
     this.colorBuffer.push(...rgbaColor);
+    this.numOfVertex++;
+    this.updateAnchor();
+    this.updateWidth();
+    this.updateHeight();
+  }
+
+  addVertexSpecificIndex(x, y, xPx, yPx, rgbaColor, index) {
+    this.vertexBuffer.splice(index * 2, 0, x, y);
+    this.vertexBufferBase.splice(index * 2, 0, x, y);
+    this.vertexPx.splice(index * 2, 0, xPx, yPx);
+    this.colorBuffer.splice(index * 4, 0, ...rgbaColor);
     this.numOfVertex++;
     this.updateAnchor();
     this.updateWidth();
