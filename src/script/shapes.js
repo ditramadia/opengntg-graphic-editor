@@ -1055,4 +1055,19 @@ class Polygon extends Shape {
       }
     }
   }
+
+  print() {
+    showLog("\nPolygon");
+    showLog(`id: ${this.id}`);
+    showLog(`numOfVertex: ${this.numOfVertex}`);
+    showLog(`colorBuffer: ${this.colorBuffer}`);
+    showLog(`vertexBuffer: ${this.vertexBuffer}`);
+    showLog(`vertexPx: ${this.vertexPx}`);
+    showLog(`vertexBufferBase: ${this.vertexBufferBase}`);
+    showLog(`Width: ${this.width}`);
+    showLog(`Height: ${this.height}`);
+    showLog(`Rotation: ${this.rotation}`);
+    showLog(`RotationBase: ${this.rotationBase}`);
+    showLog(`Anchor: ${this.anchor}`);
+  }
 }
