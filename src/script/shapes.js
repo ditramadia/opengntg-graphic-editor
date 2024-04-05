@@ -1017,7 +1017,7 @@ class Polygon extends Shape {
     this.numOfVertex++;
 
     // Ensure convexity
-    this.ensureConvex();
+    // this.ensureConvex();
 
     // Update anchor, width, and height
     this.updateAnchor();
