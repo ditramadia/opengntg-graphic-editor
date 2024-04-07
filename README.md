@@ -9,7 +9,7 @@
     Tubes 1 IF3260 Computer Graphics
     <br />
     <!-- TODO: add documentaion link -->
-    <a href=""><strong>Laporan »</strong></a>
+    <a href="https://github.com/ditramadia/opengntg-graphic-editor/blob/main/doc/IF3260_OpenGNTG.pdf"><strong>Laporan »</strong></a>
     <br />
     <br />
   </p>
@@ -81,36 +81,8 @@ Tubes 1 of Computer Graphics (IF3260). A simple graphics editor.
 <!-- USAGE -->
 ## Usage
 
-To see the full documentaiton (How to use), go to `File > Help` in the web app.
+To see the full documentaiton (OpenGNTG for starters), go to `File > Help` in the web app.
 
-<!-- TODO: Add hyperlink to each category and each points within the category -->
-### Canvas
-1. Change color
-2. Clear canvas
-
-### Basic Shapes
-1. Create line
-2. Create square
-3. Create rectangle
-4. Create with color
-
-### Polygon
-1. Create polygon
-2. Add new vertex
-3. Remove vertex
-
-### Editing Shapes
-1. Selection shapes and vertices
-2. Change shape and vertices colors
-3. Move Shape
-4. Move vertex
-5. Change width and height
-6. Rotate
-7. Scale
-
-### Import and Export
-1. Import shapes
-2. Export shapes
 <br/>
 <br/>
 
